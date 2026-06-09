@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>알비온 온라인 — 콘텐츠 가이드</title>
+  <meta name="description" content="알비온 온라인 PvE, PvP, 경제 등 모든 콘텐츠를 한국어로 정리한 가이드입니다.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b0b18;
+      --bg-card:   #111127;
+      --bg-input:  #181730;
+      --border:    #242240;
+      --gold:      #c9a84c;
+      --gold-dim:  rgba(201,168,76,0.12);
+      --gold-glow: rgba(201,168,76,0.30);
+      --text:      #e4ddd0;
+      --text-sub:  #7d758f;
+      --text-muted:#393558;
+      --blue:      #60a5fa;
+      --yellow:    #fbbf24;
+      --red:       #f87171;
+      --purple:    #a78bfa;
+      --green:     #4ade80;
+      --r:         13px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, '맑은 고딕', sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* ── NAV ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11,11,24,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+    .nav-logo span { color: var(--text); font-weight: 400; }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-decoration: none;
+      transition: all 0.16s;
+      white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: var(--gold); background: var(--gold-dim); }
+    .wip-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      padding: 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--text-sub);
+      transition: all 0.22s ease;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    @media (max-width: 640px) {
+      .nav-hamburger { display: flex; }
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 54px;
+        left: 0; right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        background: rgba(13,13,28,0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 12px 12px;
+        gap: 2px;
+      }
+      .nav-menu.open { display: flex; }
+      .nav-link { padding: 10px 14px; font-size: 14px; }
+    }
+
+    /* ── HEADER ── */
+    .hdr {
+      position: relative;
+      text-align: center;
+      padding: 36px 16px 26px;
+      background: linear-gradient(180deg, #0e0c26 0%, var(--bg) 100%);
+      overflow: hidden;
+    }
+    .hdr::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hdr::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.45), transparent);
+    }
+    .hdr-inner { position: relative; z-index: 1; }
+    .hdr-eyebrow {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.75;
+      margin-bottom: 10px;
+    }
+    .hdr h1 {
+      font-size: clamp(22px, 5.5vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+    .hdr h1 em { font-style: normal; color: var(--gold); }
+    .hdr-sub {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    /* ── TABS ── */
+    .tabs-wrap {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 24px 14px 0;
+    }
+    .tabs-bar {
+      display: flex;
+      gap: 3px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 9px 9px 0 0;
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.16s;
+      position: relative;
+      bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .tab-btn.active {
+      color: var(--gold);
+      background: var(--bg);
+      border-color: var(--border);
+      border-bottom-color: var(--bg);
+    }
+    .tab-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 18px;
+      border-radius: 9px;
+      background: rgba(255,255,255,0.07);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding: 0 5px;
+    }
+    .tab-btn.active .tab-count {
+      background: var(--gold-dim);
+      color: var(--gold);
+    }
+
+    /* ── CARDS ── */
+    .cards-section {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 22px 14px 64px;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active {
+      display: block;
+      animation: panelIn 0.2s ease;
+    }
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 560px) {
+      .cards-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    }
+    @media (max-width: 380px) {
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+
+    .guide-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+    }
+    .guide-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.55);
+      border-color: rgba(201,168,76,0.22);
+    }
+
+    .card-thumb {
+      height: 116px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .card-thumb::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.07) 0%, transparent 65%);
+    }
+    .card-thumb::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40%;
+      background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent);
+    }
+    .card-thumb .thumb-icon {
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.6));
+      line-height: 1;
+    }
+
+    .card-body {
+      padding: 13px 15px 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+    .card-desc {
+      font-size: 11.5px;
+      color: var(--text-sub);
+      line-height: 1.55;
+      flex: 1;
+      margin-bottom: 11px;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 11px;
+    }
+    .tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+    /* 난이도 태그 */
+    .d0 { background: rgba(74,222,128,0.10);  color: #4ade80; border: 1px solid rgba(74,222,128,0.20);  }
+    .d1 { background: rgba(96,165,250,0.10);  color: #60a5fa; border: 1px solid rgba(96,165,250,0.20);  }
+    .d2 { background: rgba(251,146,60,0.10);  color: #fb923c; border: 1px solid rgba(251,146,60,0.20);  }
+    .d3 { background: rgba(248,113,113,0.10); color: #f87171; border: 1px solid rgba(248,113,113,0.20); }
+    /* 유형 태그 */
+    .dt { background: rgba(255,255,255,0.05); color: var(--text-sub); border: 1px solid var(--border); }
+
+    .card-btn {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.16s;
+    }
+    .card-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: var(--gold-dim);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      letter-spacing: 0.3px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Albion<span>GG</span></a>
+    <button class="nav-hamburger" id="navBurger" onclick="toggleNav()" aria-label="메뉴 열기">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html" class="nav-link">홈</a></li>
+      <li><a href="index.html" class="nav-link">페임 계산기</a></li>
+      <li><a href="#" class="nav-link" onclick="wip(event)">빌드 <span class="wip-badge">준비중</span></a></li>
+      <li><a href="guide.html" class="nav-link active">가이드</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <span class="hdr-eyebrow">Albion Online</span>
+    <h1>콘텐츠 <em>가이드</em></h1>
+    <p class="hdr-sub">알비온 온라인의 모든 콘텐츠를 카테고리별로 정리했습니다</p>
+  </div>
+</header>
+
+<div class="tabs-wrap">
+  <div class="tabs-bar">
+    <button class="tab-btn active" data-tab="pve"      onclick="switchTab('pve')">PvE      <span class="tab-count" id="cnt-pve"></span></button>
+    <button class="tab-btn"        data-tab="pvp"      onclick="switchTab('pvp')">PvP      <span class="tab-count" id="cnt-pvp"></span></button>
+    <button class="tab-btn"        data-tab="economy"  onclick="switchTab('economy')">경제 <span class="tab-count" id="cnt-economy"></span></button>
+    <button class="tab-btn"        data-tab="misc"     onclick="switchTab('misc')">기타     <span class="tab-count" id="cnt-misc"></span></button>
+  </div>
+</div>
+
+<section class="cards-section">
+  <div class="tab-panel active" id="panel-pve"></div>
+  <div class="tab-panel"        id="panel-pvp"></div>
+  <div class="tab-panel"        id="panel-economy"></div>
+  <div class="tab-panel"        id="panel-misc"></div>
+</section>
+
+<footer>
+  알비온 온라인 한국어 정보 사이트 &nbsp;·&nbsp; 데이터는 게임 내 수치 기준 &nbsp;·&nbsp; Albion Online
+</footer>
+
+<script>
+// 난이도 → CSS 클래스 / 한글 표기
+const DIFF = { '입문': 'd0', '초급': 'd1', '중급': 'd2', '고급': 'd3' };
+
+const DATA = {
+  pve: [
+    { name: '필드사냥',          desc: '오픈 월드에서 몬스터를 사냥해 페임과 실버를 획득',                    diff: '입문', type: '솔로·그룹', color: '#6b2d1c', icon: '⚔️' },
+    { name: '오픈 던전',         desc: '누구나 입장 가능한 개방형 던전, 다른 플레이어와 마주칠 수 있음',       diff: '초급', type: '솔로·그룹', color: '#4a2266', icon: '🏛️' },
+    { name: '솔로 던전',         desc: '혼자만 입장 가능한 인스턴스 던전',                                   diff: '초급', type: '솔로',      color: '#183352', icon: '🗡️' },
+    { name: '그룹 던전',         desc: '파티를 구성해 함께 공략하는 던전',                                   diff: '중급', type: '그룹',      color: '#331a55', icon: '🛡️' },
+    { name: '스태틱 던전',       desc: '고정 위치에 존재하는 던전, 높은 페임 효율',                           diff: '중급', type: '솔로·그룹', color: '#252252', icon: '🏰' },
+    { name: '아발로니안 던전',   desc: '아발로니안 세계관의 고난이도 던전',                                   diff: '고급', type: '그룹',      color: '#0c3636', icon: '✨' },
+    { name: '원정대',            desc: '안전한 인스턴스 PvE 콘텐츠',                                        diff: '입문', type: '솔로·그룹', color: '#163362', icon: '🗺️' },
+    { name: '하드코어 원정대',   desc: '고난이도 원정대, 높은 보상 (HCE)',                                   diff: '고급', type: '그룹',      color: '#5e1616', icon: '💀' },
+    { name: '미스트',            desc: '안개 속 탐험 콘텐츠, PvE와 PvP가 혼재',                             diff: '중급', type: '솔로',      color: '#143636', icon: '🌫️' },
+    { name: '미스트 던전',       desc: '미스트 내부의 인스턴스 던전',                                        diff: '중급', type: '솔로',      color: '#0c2b2b', icon: '🏔️' },
+    { name: '월드 보스',         desc: '오픈 월드에 출현하는 강력한 보스',                                   diff: '고급', type: '그룹',      color: '#4d0c0c', icon: '👾' },
+    { name: '부패한 던전',       desc: 'PvE 진행 중 다른 플레이어의 침입이 가능한 1v1 콘텐츠',               diff: '중급', type: '솔로',      color: '#3d0c26', icon: '🩸' },
+  ],
+  pvp: [
+    { name: '헬게이트',          desc: '2v2 또는 5v5 PvP 전투 콘텐츠',                                     diff: '중급', type: '그룹',      color: '#5e1616', icon: '🔥' },
+    { name: '팩션 워페어',       desc: '도시 팩션에 가입해 오픈 월드 PvP에 참여',                           diff: '초급', type: '솔로·그룹', color: '#4d330c', icon: '🏴' },
+    { name: '갱킹',              desc: '오픈 월드에서 다른 플레이어를 기습',                                 diff: '중급', type: '솔로·그룹', color: '#3d1616', icon: '🗡️' },
+    { name: '아레나',            desc: '인스턴스 PvP 전투',                                                diff: '초급', type: '그룹',      color: '#162652', icon: '🏆' },
+    { name: 'GvG',               desc: '길드 간 5v5 영토 전투',                                            diff: '고급', type: '그룹',      color: '#4d1626', icon: '⚔️' },
+    { name: 'ZvZ',               desc: '대규모 길드 간 전투',                                              diff: '고급', type: '대규모',    color: '#160c33', icon: '💥' },
+    { name: '영토 점령',         desc: '길드가 영토를 점령하고 방어',                                        diff: '고급', type: '대규모',    color: '#3d330c', icon: '🏰' },
+    { name: '결투',              desc: '1v1 합의 PvP',                                                     diff: '초급', type: '솔로',      color: '#16334d', icon: '🤺' },
+    { name: '심연의 구렁',       desc: '2025년 신규, PvP 입문용 훈련 콘텐츠',                               diff: '초급', type: '솔로·그룹', color: '#261652', icon: '🌀' },
+  ],
+  economy: [
+    { name: '채집',              desc: '오픈 월드에서 자원을 수집',                                         diff: '입문', type: '솔로',      color: '#0c361c', icon: '🌿' },
+    { name: '제작·정제',         desc: '자원을 가공해 아이템을 제작',                                        diff: '입문', type: '솔로',      color: '#0c2b2b', icon: '🔨' },
+    { name: '요리',              desc: '음식 아이템을 제작해 전투 버프 제공',                                diff: '초급', type: '솔로',      color: '#4d330c', icon: '🍖' },
+    { name: '농사',              desc: '개인 섬에서 작물을 재배',                                           diff: '입문', type: '솔로',      color: '#163d10', icon: '🌱' },
+    { name: '동물 키우기',       desc: '개인 섬에서 동물을 사육',                                           diff: '입문', type: '솔로',      color: '#33260c', icon: '🐄' },
+    { name: '거래·경매장',       desc: '시장에서 아이템을 사고팔아 수익 창출',                               diff: '입문', type: '솔로',      color: '#332600', icon: '💰' },
+  ],
+  misc: [
+    { name: '낚시',              desc: '오픈 월드에서 낚시로 아이템과 실버를 획득',                          diff: '입문', type: '솔로',      color: '#0c2640', icon: '🎣' },
+  ],
+};
+
+function buildCard(c) {
+  return `
+    <div class="guide-card">
+      <div class="card-thumb" style="background:${c.color}">
+        <span class="thumb-icon">${c.icon}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">${c.name}</div>
+        <p class="card-desc">${c.desc}</p>
+        <div class="card-tags">
+          <span class="tag ${DIFF[c.diff]}">${c.diff}</span>
+          <span class="tag dt">${c.type}</span>
+        </div>
+        <button class="card-btn" onclick="wip(event)">자세히 보기</button>
+      </div>
+    </div>`;
+}
+
+function renderAll() {
+  Object.entries(DATA).forEach(([key, items]) => {
+    document.getElementById('panel-' + key).innerHTML =
+      `<div class="cards-grid">${items.map(buildCard).join('')}</div>`;
+    document.getElementById('cnt-' + key).textContent = items.length;
+  });
+}
+
+function switchTab(key) {
+  document.querySelectorAll('.tab-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === key));
+  document.querySelectorAll('.tab-panel').forEach(p =>
+    p.classList.toggle('active', p.id === 'panel-' + key));
+}
+
+function toggleNav() {
+  document.getElementById('navBurger').classList.toggle('open');
+  document.getElementById('navMenu').classList.toggle('open');
+}
+
+function wip(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  alert('준비 중인 기능입니다.');
+}
+
+document.addEventListener('click', function(e) {
+  const nav = document.querySelector('.navbar');
+  if (nav && !nav.contains(e.target)) {
+    document.getElementById('navBurger').classList.remove('open');
+    document.getElementById('navMenu').classList.remove('open');
+  }
+});
+
+renderAll();
+</script>
+</body>
+</html>
