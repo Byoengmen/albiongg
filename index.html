@@ -385,6 +385,116 @@
 
     .hidden { display: none !important; }
 
+    /* ── NAV ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11,11,24,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+    .nav-logo span { color: var(--text); font-weight: 400; }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-decoration: none;
+      transition: all 0.16s;
+      white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-link.active {
+      color: var(--gold);
+      background: var(--gold-dim);
+    }
+    .wip-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    /* 햄버거 */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      padding: 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--text-sub);
+      transition: all 0.22s ease;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 640px) {
+      .nav-hamburger { display: flex; }
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 54px;
+        left: 0; right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        background: rgba(13,13,28,0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 12px 12px;
+        gap: 2px;
+      }
+      .nav-menu.open { display: flex; }
+      .nav-link { padding: 10px 14px; font-size: 14px; }
+    }
+
     /* ── AD ── */
     .ad-wrap {
       text-align: center;
@@ -400,6 +510,21 @@
   </style>
 </head>
 <body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Albion<span>GG</span></a>
+    <button class="nav-hamburger" id="navBurger" onclick="toggleNav()" aria-label="메뉴 열기">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html" class="nav-link">홈</a></li>
+      <li><a href="index.html" class="nav-link active">페임 계산기</a></li>
+      <li><a href="#" class="nav-link" onclick="wip(event)">빌드 <span class="wip-badge">준비중</span></a></li>
+      <li><a href="#" class="nav-link" onclick="wip(event)">가이드 <span class="wip-badge">준비중</span></a></li>
+    </ul>
+  </div>
+</nav>
 
 <header class="hdr">
   <div class="hdr-inner">
@@ -712,6 +837,27 @@ function fitBigNumber() {
     el.style.fontSize = Math.max(MIN, Math.floor(MAX * avail / el.scrollWidth)) + 'px';
   }
 }
+
+function toggleNav() {
+  const burger = document.getElementById('navBurger');
+  const menu   = document.getElementById('navMenu');
+  burger.classList.toggle('open');
+  menu.classList.toggle('open');
+}
+
+function wip(e) {
+  e.preventDefault();
+  alert('준비 중인 기능입니다.');
+}
+
+// 외부 클릭 시 모바일 메뉴 닫기
+document.addEventListener('click', function(e) {
+  const nav = document.querySelector('.navbar');
+  if (!nav.contains(e.target)) {
+    document.getElementById('navBurger').classList.remove('open');
+    document.getElementById('navMenu').classList.remove('open');
+  }
+});
 
 // 초기 실행
 calc();
