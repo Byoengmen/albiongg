@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>알비온 온라인 — 페임 보너스 계산기</title>
+  <meta name="description" content="알비온 온라인 필드사냥 기준 페임 보너스 계산기. 통찰력의 가방, 존 타입, 프리미엄 세팅에 따른 최종 보너스를 계산합니다.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b0b18;
+      --bg-card:   #111127;
+      --bg-input:  #181730;
+      --border:    #242240;
+      --gold:      #c9a84c;
+      --gold-dim:  rgba(201,168,76,0.12);
+      --gold-glow: rgba(201,168,76,0.30);
+      --text:      #e4ddd0;
+      --text-sub:  #7d758f;
+      --text-muted:#393558;
+      --blue:      #60a5fa;
+      --yellow:    #fbbf24;
+      --red:       #f87171;
+      --purple:    #a78bfa;
+      --green:     #4ade80;
+      --r:         13px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, '맑은 고딕', sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* ── HEADER ── */
+    .hdr {
+      position: relative;
+      text-align: center;
+      padding: 40px 16px 30px;
+      background: linear-gradient(180deg, #0e0c26 0%, var(--bg) 100%);
+      overflow: hidden;
+    }
+    .hdr::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hdr::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.45), transparent);
+    }
+    .hdr-inner { position: relative; z-index: 1; }
+    .hdr-eyebrow {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.75;
+      margin-bottom: 12px;
+    }
+    .hdr h1 {
+      font-size: clamp(22px, 5.5vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+    .hdr h1 em { font-style: normal; color: var(--gold); }
+    .hdr-sub {
+      margin-top: 9px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    /* ── LAYOUT ── */
+    main {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 28px 14px 64px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 355px;
+      gap: 18px;
+      align-items: stretch;
+    }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .result-col { height: auto; }
+      .result-card { height: auto !important; overflow-y: visible !important; }
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 22px;
+      margin-bottom: 14px;
+    }
+    .card:last-child { margin-bottom: 0; }
+    .sec-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .sec-title .ico { font-size: 15px; }
+
+    /* ── BAG ── */
+    .wear-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .wear-btn {
+      padding: 10px;
+      border-radius: 9px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.16s;
+    }
+    .wear-btn.on {
+      border-color: var(--gold);
+      background: var(--gold-dim);
+      color: var(--gold);
+    }
+    .bag-opts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      transition: opacity 0.2s;
+    }
+    .bag-opts.off { opacity: 0.25; pointer-events: none; }
+    @media (max-width: 420px) {
+      .bag-opts { grid-template-columns: 1fr; }
+    }
+    .opt-block label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+    select {
+      width: 100%;
+      padding: 9px 26px 9px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-input);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%237d758f' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 9px center;
+      color: var(--text);
+      font-size: 13px;
+      appearance: none;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    select:focus { border-color: var(--gold); }
+    option { background: #181730; }
+
+    .bag-stat-box {
+      margin-top: 14px;
+      padding: 14px;
+      background: rgba(201,168,76,0.05);
+      border: 1px solid rgba(201,168,76,0.17);
+      border-radius: 10px;
+      display: flex;
+    }
+    .bag-stat {
+      flex: 1;
+      text-align: center;
+      padding: 0 8px;
+    }
+    .bag-stat + .bag-stat { border-left: 1px solid rgba(201,168,76,0.13); }
+    .bag-stat .sv {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .bag-stat .sl {
+      font-size: 10px;
+      color: var(--text-sub);
+      margin-top: 3px;
+    }
+
+    /* ── ZONE ── */
+    .zone-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+    .zone-btn {
+      padding: 14px 8px;
+      border-radius: 10px;
+      border: 1.5px solid transparent;
+      background: var(--bg-input);
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.16s;
+    }
+    .zone-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .zone-btn .zn { font-size: 12px; font-weight: 700; }
+    .zone-btn .zp { font-size: 22px; font-weight: 900; line-height: 1.1; }
+    .zone-btn .zd { font-size: 10px; opacity: 0.6; }
+
+    .zone-btn[data-z="blue"]   { color: var(--blue);   border-color: rgba(96,165,250,0.15); }
+    .zone-btn[data-z="yellow"] { color: var(--yellow);  border-color: rgba(251,191,36,0.15); }
+    .zone-btn[data-z="red"]    { color: var(--red);    border-color: rgba(248,113,113,0.15); }
+    .zone-btn[data-z="black"]  { color: var(--purple); border-color: rgba(167,139,250,0.15); }
+
+    .zone-btn.on[data-z="blue"]   { background: rgba(96,165,250,0.10);   border-color: var(--blue); }
+    .zone-btn.on[data-z="yellow"] { background: rgba(251,191,36,0.10);   border-color: var(--yellow); }
+    .zone-btn.on[data-z="red"]    { background: rgba(248,113,113,0.10);  border-color: var(--red); }
+    .zone-btn.on[data-z="black"]  { background: rgba(167,139,250,0.10);  border-color: var(--purple); }
+
+    /* ── PREMIUM ── */
+    .prem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+    .prem-btn {
+      padding: 14px 10px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-sub);
+      cursor: pointer;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.16s;
+    }
+    .prem-btn .pm { display: block; font-size: 22px; font-weight: 900; margin-top: 5px; }
+    .prem-btn.on {
+      border-color: var(--green);
+      background: rgba(74,222,128,0.07);
+      color: var(--green);
+    }
+
+    /* ── RESULT CARD ── */
+    .result-col {
+      min-height: 0;
+    }
+    .result-card {
+      background: linear-gradient(145deg, #111127 0%, #0d0c20 100%);
+      border-color: rgba(201,168,76,0.22);
+      height: 100%;
+      overflow-y: auto;
+      /* 스크롤바 스타일 */
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .result-card::-webkit-scrollbar { width: 5px; }
+    .result-card::-webkit-scrollbar-track { background: transparent; }
+    .result-card::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .result-hero {
+      text-align: center;
+      padding: 10px 0 20px;
+    }
+    .rh-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+    .big-pct {
+      font-size: 78px;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+      color: var(--gold);
+      text-shadow: 0 0 50px var(--gold-glow);
+      transition: color 0.3s, text-shadow 0.3s;
+      will-change: color;
+    }
+    @keyframes pop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    .big-pct.pop { animation: pop 0.22s ease; }
+
+    .mult-badge {
+      margin-top: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(201,168,76,0.07);
+      border: 1px solid rgba(201,168,76,0.16);
+      border-radius: 100px;
+      padding: 5px 15px;
+      font-size: 13px;
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .mult-badge strong { font-size: 15px; }
+
+    .divider { height: 1px; background: var(--border); margin: 18px 0 14px; }
+
+    .bd-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 9px;
+    }
+
+    .bd-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 12px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+      background: var(--bg-input);
+      font-size: 13px;
+    }
+    .bd-row .bl { color: var(--text-sub); display: flex; align-items: center; gap: 6px; }
+    .bd-row .bv { font-weight: 700; color: var(--text); }
+    .bd-row.prem-row .bv { color: var(--green); }
+    .bd-row.total-row {
+      background: rgba(201,168,76,0.06);
+      border: 1px solid rgba(201,168,76,0.16);
+      margin-top: 6px;
+    }
+    .bd-row.total-row .bl { color: var(--text); font-weight: 600; font-size: 14px; }
+    .bd-row.total-row .bv { color: var(--gold); font-size: 15px; }
+
+    .silver-box {
+      margin-top: 12px;
+      padding: 11px 13px;
+      background: rgba(167,139,250,0.05);
+      border: 1px solid rgba(167,139,250,0.14);
+      border-radius: 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+    .silver-box .sl { color: var(--text-sub); }
+    .silver-box .sv { color: var(--purple); font-weight: 700; font-size: 14px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      letter-spacing: 0.3px;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <span class="hdr-eyebrow">Albion Online</span>
+    <h1>필드사냥 <em>페임 보너스</em> 계산기</h1>
+    <p class="hdr-sub">가방 · 존 · 프리미엄 세팅에 따른 최종 보너스를 실시간으로 계산합니다</p>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <!-- ──── LEFT: 입력 영역 ──── -->
+    <div class="left-col">
+
+      <!-- 통찰력의 가방 -->
+      <div class="card">
+        <div class="sec-title"><span class="ico">🎒</span> 통찰력의 가방</div>
+
+        <div class="wear-row">
+          <button class="wear-btn on" id="wearNo"  onclick="setBag(false)">가방 미착용</button>
+          <button class="wear-btn"    id="wearYes" onclick="setBag(true)">가방 착용</button>
+        </div>
+
+        <div class="bag-opts off" id="bagOpts">
+          <div class="opt-block">
+            <label>티어</label>
+            <select id="sTier" onchange="calc()">
+              <option value="4">T4</option>
+              <option value="5">T5</option>
+              <option value="6">T6</option>
+              <option value="7" selected>T7</option>
+              <option value="8">T8</option>
+            </select>
+          </div>
+          <div class="opt-block">
+            <label>인첸트</label>
+            <select id="sEnchant" onchange="calc()">
+              <option value="0">.0 (기본)</option>
+              <option value="1">.1</option>
+              <option value="2">.2</option>
+              <option value="3">.3</option>
+              <option value="4">.4</option>
+            </select>
+          </div>
+          <div class="opt-block">
+            <label>품질</label>
+            <select id="sQuality" onchange="calc()">
+              <option value="0">일반</option>
+              <option value="1">좋음</option>
+              <option value="2">뛰어남</option>
+              <option value="3">우수함</option>
+              <option value="4">걸작</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="bag-stat-box hidden" id="bagStatBox">
+          <div class="bag-stat">
+            <div class="sv" id="bFame">—</div>
+            <div class="sl">전투명성 증가</div>
+          </div>
+          <div class="bag-stat">
+            <div class="sv" id="bSilver">—</div>
+            <div class="sl">명성당 실버 소모</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 존 타입 -->
+      <div class="card">
+        <div class="sec-title"><span class="ico">🗺️</span> 존 타입</div>
+        <div class="zone-grid">
+          <button class="zone-btn" data-z="blue"   data-v="115" onclick="setZone(this)">
+            <span class="zn">블루존</span>
+            <span class="zp">+115%</span>
+            <span class="zd">안전 구역</span>
+          </button>
+          <button class="zone-btn on" data-z="yellow" data-v="140" onclick="setZone(this)">
+            <span class="zn">옐로존</span>
+            <span class="zp">+140%</span>
+            <span class="zd">부분 위험</span>
+          </button>
+          <button class="zone-btn" data-z="red"    data-v="230" onclick="setZone(this)">
+            <span class="zn">레드존</span>
+            <span class="zp">+230%</span>
+            <span class="zd">풀 PvP 위험</span>
+          </button>
+          <button class="zone-btn" data-z="black"  data-v="320" onclick="setZone(this)">
+            <span class="zn">블랙존</span>
+            <span class="zp">+320%</span>
+            <span class="zd">최고 보상</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 프리미엄 -->
+      <div class="card">
+        <div class="sec-title"><span class="ico">👑</span> 프리미엄</div>
+        <div class="prem-grid">
+          <button class="prem-btn on" id="pNo"  onclick="setPremium(false)">
+            없음
+            <span class="pm">×1.0</span>
+          </button>
+          <button class="prem-btn"    id="pYes" onclick="setPremium(true)">
+            프리미엄
+            <span class="pm">×1.5</span>
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /left-col -->
+
+    <!-- ──── RIGHT: 결과 ──── -->
+    <div class="result-col">
+      <div class="card result-card">
+        <div class="sec-title"><span class="ico">📊</span> 계산 결과</div>
+
+        <div class="result-hero">
+          <div class="rh-label">총 페임 보너스</div>
+          <div class="big-pct" id="bigPct">+140%</div>
+          <div class="mult-badge">
+            ⚡ 페임 배율&nbsp;<strong id="multVal">×2.40</strong>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="bd-title">항목별 세부 내역</div>
+
+        <div class="bd-row">
+          <span class="bl">🗺️ 존 보너스</span>
+          <span class="bv" id="bdZone">+140%</span>
+        </div>
+        <div class="bd-row">
+          <span class="bl">🎒 가방 보너스</span>
+          <span class="bv" id="bdBag">미착용 (0%)</span>
+        </div>
+        <div class="bd-row">
+          <span class="bl">합산 (프리미엄 전)</span>
+          <span class="bv" id="bdSub">+140%</span>
+        </div>
+        <div class="bd-row prem-row hidden" id="bdPremRow">
+          <span class="bl">👑 프리미엄 배율</span>
+          <span class="bv">×1.5</span>
+        </div>
+        <div class="bd-row total-row">
+          <span class="bl">최종 페임 보너스</span>
+          <span class="bv" id="bdTotal">+140%</span>
+        </div>
+
+        <div class="silver-box hidden" id="silverBox">
+          <span class="sl">💰 명성당 실버 소모</span>
+          <span class="sv" id="silverVal">—</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+</main>
+
+<footer>
+  알비온 온라인 한국어 정보 사이트 &nbsp;·&nbsp; 데이터는 게임 내 수치 기준 &nbsp;·&nbsp; Albion Online
+</footer>
+
+<script>
+// ── 가방 데이터: D[tier][enchant][quality] = [fame%, silver/fame]
+// quality: 0=일반 1=좋음 2=뛰어남 3=우수함 4=걸작
+const D = {
+  4:{
+    0:[[40.004,1.44],[40.853,1.44],[41.724,1.43],[42.616,1.43],[44.469,1.42]],
+    1:[[44.469,1.42],[45.431,1.41],[46.417,1.41],[47.430,1.40],[49.533,1.40]],
+    2:[[49.533,1.40],[50.627,1.39],[51.749,1.39],[52.901,1.38],[55.298,1.37]],
+    3:[[55.298,1.37],[56.546,1.37],[57.827,1.37],[59.143,1.36],[61.886,1.36]],
+    4:[[61.886,1.36],[63.315,1.35],[64.783,1.35],[66.294,1.34],[69.445,1.34]]
+  },
+  5:{
+    0:[[44.469,1.42],[45.431,1.41],[46.417,1.41],[47.430,1.40],[49.533,1.40]],
+    1:[[49.533,1.40],[50.627,1.39],[51.749,1.39],[52.901,1.38],[55.298,1.37]],
+    2:[[55.298,1.37],[56.546,1.37],[57.827,1.37],[59.143,1.36],[61.886,1.36]],
+    3:[[61.886,1.36],[63.315,1.35],[64.783,1.35],[66.294,1.34],[69.445,1.34]],
+    4:[[69.445,1.34],[71.088,1.33],[72.780,1.33],[74.521,1.33],[78.158,1.32]]
+  },
+  6:{
+    0:[[49.533,1.40],[50.627,1.39],[51.749,1.39],[52.901,1.38],[55.298,1.37]],
+    1:[[55.298,1.37],[56.546,1.37],[57.827,1.37],[59.143,1.36],[61.886,1.36]],
+    2:[[61.886,1.36],[63.315,1.35],[64.783,1.35],[66.294,1.34],[69.445,1.34]],
+    3:[[69.445,1.34],[71.088,1.33],[72.780,1.33],[74.521,1.33],[78.158,1.32]],
+    4:[[78.158,1.32],[80.058,1.32],[82.015,1.32],[84.032,1.31],[88.252,1.31]]
+  },
+  7:{
+    0:[[55.298,1.37],[56.546,1.37],[57.827,1.37],[59.143,1.36],[61.886,1.36]],
+    1:[[61.886,1.36],[63.315,1.35],[64.783,1.35],[66.294,1.34],[69.445,1.34]],
+    2:[[69.445,1.34],[71.088,1.33],[72.780,1.33],[74.521,1.33],[78.158,1.32]],
+    3:[[78.158,1.32],[80.058,1.32],[82.015,1.32],[84.032,1.31],[88.252,1.31]],
+    4:[[88.252,1.31],[90.460,1.30],[92.737,1.30],[95.086,1.30],[100.010,1.29]]
+  },
+  8:{
+    0:[[61.886,1.36],[63.315,1.35],[64.783,1.35],[66.294,1.34],[69.445,1.34]],
+    1:[[69.445,1.34],[71.088,1.33],[72.780,1.33],[74.521,1.33],[78.158,1.32]],
+    2:[[78.158,1.32],[80.058,1.32],[82.015,1.32],[84.032,1.31],[88.252,1.31]],
+    3:[[88.252,1.31],[90.460,1.30],[92.737,1.30],[95.086,1.30],[100.010,1.29]],
+    4:[[100.010,1.29],[102.591,1.29],[105.255,1.29],[108.007,1.29],[113.787,1.28]]
+  }
+};
+
+let bagOn = false, zone = 140, premium = false;
+
+function setBag(on) {
+  bagOn = on;
+  document.getElementById('wearNo').classList.toggle('on', !on);
+  document.getElementById('wearYes').classList.toggle('on', on);
+  document.getElementById('bagOpts').classList.toggle('off', !on);
+  const statBox = document.getElementById('bagStatBox');
+  if (on) statBox.classList.remove('hidden');
+  else     statBox.classList.add('hidden');
+  calc();
+}
+
+function setZone(btn) {
+  document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  zone = parseInt(btn.dataset.v, 10);
+  calc();
+}
+
+function setPremium(on) {
+  premium = on;
+  document.getElementById('pNo').classList.toggle('on', !on);
+  document.getElementById('pYes').classList.toggle('on', on);
+  calc();
+}
+
+function getStat() {
+  if (!bagOn) return null;
+  return D[+document.getElementById('sTier').value]
+          [+document.getElementById('sEnchant').value]
+          [+document.getElementById('sQuality').value];
+}
+
+function fmt(n, digits) {
+  return n.toFixed(digits ?? 3).replace(/\.?0+$/, '');
+}
+
+function calc() {
+  const stat    = getStat();
+  const bagBonus = stat ? stat[0] : 0;
+
+  // 가방 미리보기
+  if (bagOn && stat) {
+    document.getElementById('bFame').textContent   = '+' + fmt(stat[0]) + '%';
+    document.getElementById('bSilver').textContent = fmt(stat[1], 2);
+    document.getElementById('silverVal').textContent = fmt(stat[1], 2) + ' 실버 / 명성';
+    document.getElementById('silverBox').classList.remove('hidden');
+  } else {
+    document.getElementById('silverBox').classList.add('hidden');
+  }
+
+  // 계산
+  const sub   = zone + bagBonus;
+  const total = premium ? sub * 1.5 : sub;
+  const mult  = 1 + total / 100;
+
+  // 숫자 색상: 값 구간별
+  let color, glow;
+  if      (total >= 620) { color = '#bb86fc'; glow = 'rgba(167,139,250,0.35)'; }
+  else if (total >= 450) { color = '#f87171'; glow = 'rgba(248,113,113,0.35)'; }
+  else if (total >= 300) { color = '#fbbf24'; glow = 'rgba(251,191,36,0.35)';  }
+  else                   { color = '#c9a84c'; glow = 'rgba(201,168,76,0.30)';  }
+
+  const bigEl = document.getElementById('bigPct');
+  bigEl.style.color      = color;
+  bigEl.style.textShadow = `0 0 50px ${glow}`;
+  bigEl.textContent      = '+' + fmt(total, 2) + '%';
+  fitBigNumber();
+  bigEl.classList.remove('pop');
+  void bigEl.offsetWidth; // reflow for re-animation
+  bigEl.classList.add('pop');
+
+  // 배율
+  document.getElementById('multVal').textContent = '×' + mult.toFixed(2);
+
+  // 세부 내역
+  document.getElementById('bdZone').textContent  = '+' + zone + '%';
+  document.getElementById('bdBag').textContent   = bagOn
+    ? ('+' + fmt(bagBonus) + '%')
+    : '미착용 (0%)';
+  document.getElementById('bdSub').textContent   = '+' + fmt(sub) + '%';
+  document.getElementById('bdTotal').textContent = '+' + fmt(total, 2) + '%';
+  document.getElementById('bdPremRow').classList.toggle('hidden', !premium);
+}
+
+function fitBigNumber() {
+  const el = document.getElementById('bigPct');
+  const MAX = 78, MIN = 28;
+  el.style.fontSize = MAX + 'px';
+  const avail = el.parentElement.clientWidth;
+  if (el.scrollWidth > avail) {
+    el.style.fontSize = Math.max(MIN, Math.floor(MAX * avail / el.scrollWidth)) + 'px';
+  }
+}
+
+// 초기 실행
+calc();
+window.addEventListener('resize', fitBigNumber);
+</script>
+</body>
+</html>
