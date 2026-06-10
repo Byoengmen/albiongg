@@ -653,12 +653,16 @@
 
 <div class="tabs-wrap">
   <div class="tabs-bar">
-    <button class="tab-btn active" data-tab="pve" onclick="switchTab('pve')">PvE <span class="tab-count" id="cnt-pve"></span></button>
+    <button class="tab-btn active" data-tab="pve"  onclick="switchTab('pve')">PvE  <span class="tab-count" id="cnt-pve"></span></button>
+    <button class="tab-btn"        data-tab="pvp"  onclick="switchTab('pvp')">PvP  <span class="tab-count" id="cnt-pvp"></span></button>
+    <button class="tab-btn"        data-tab="life" onclick="switchTab('life')">생활 <span class="tab-count" id="cnt-life"></span></button>
   </div>
 </div>
 
 <section class="cards-section">
   <div class="tab-panel active" id="panel-pve"></div>
+  <div class="tab-panel"        id="panel-pvp"></div>
+  <div class="tab-panel"        id="panel-life"></div>
 </section>
 
 <footer>
@@ -688,6 +692,26 @@ const DATA = {
     { name: '원정대',            desc: '안전한 인스턴스 PvE 콘텐츠',                                        diff: '입문', type: '솔로·그룹', color: '#163362', icon: '🗺️' },
     { name: '미스트',            desc: '안개 속 탐험 콘텐츠, PvE와 PvP가 혼재',                             diff: '중급', type: '솔로',      color: '#143636', icon: '🌫️' },
     { name: '월드 보스',         desc: '오픈 월드에 출현하는 강력한 보스',                                   diff: '고급', type: '그룹',      color: '#4d0c0c', icon: '👾' },
+  ],
+  pvp: [
+    { name: '헬게이트',          desc: '2v2 또는 5v5 PvP 전투 콘텐츠',                                     diff: '중급', type: '그룹',      color: '#5e1616', icon: '🔥' },
+    { name: '팩션 워페어',       desc: '도시 팩션에 가입해 오픈 월드 PvP에 참여',                           diff: '초급', type: '솔로·그룹', color: '#4d330c', icon: '🏴' },
+    { name: '갱킹',              desc: '오픈 월드에서 다른 플레이어를 기습',                                 diff: '중급', type: '솔로·그룹', color: '#3d1616', icon: '🗡️' },
+    { name: '아레나',            desc: '인스턴스 PvP 전투',                                                diff: '초급', type: '그룹',      color: '#162652', icon: '🏆' },
+    { name: 'GvG',               desc: '길드 간 5v5 영토 전투',                                            diff: '고급', type: '그룹',      color: '#4d1626', icon: '⚔️' },
+    { name: 'ZvZ',               desc: '대규모 길드 간 전투',                                              diff: '고급', type: '대규모',    color: '#160c33', icon: '💥' },
+    { name: '영토 점령',         desc: '길드가 영토를 점령하고 방어',                                        diff: '고급', type: '대규모',    color: '#3d330c', icon: '🏰' },
+    { name: '결투',              desc: '1v1 합의 PvP',                                                     diff: '초급', type: '솔로',      color: '#16334d', icon: '🤺' },
+    { name: '심연의 구렁',       desc: '2025년 신규, PvP 입문용 훈련 콘텐츠',                               diff: '초급', type: '솔로·그룹', color: '#261652', icon: '🌀' },
+  ],
+  life: [
+    { name: '채집',              desc: '오픈 월드에서 자원을 수집',                                         diff: '입문', type: '솔로',      color: '#0c361c', icon: '🌿' },
+    { name: '제작·정제',         desc: '자원을 가공해 아이템을 제작',                                        diff: '입문', type: '솔로',      color: '#0c2b2b', icon: '🔨' },
+    { name: '요리',              desc: '음식 아이템을 제작해 전투 버프 제공',                                diff: '초급', type: '솔로',      color: '#4d330c', icon: '🍖' },
+    { name: '농사',              desc: '개인 섬에서 작물을 재배',                                           diff: '입문', type: '솔로',      color: '#163d10', icon: '🌱' },
+    { name: '동물 키우기',       desc: '개인 섬에서 동물을 사육',                                           diff: '입문', type: '솔로',      color: '#33260c', icon: '🐄' },
+    { name: '거래·경매장',       desc: '시장에서 아이템을 사고팔아 수익 창출',                               diff: '입문', type: '솔로',      color: '#332600', icon: '💰' },
+    { name: '낚시',              desc: '오픈 월드에서 낚시로 아이템과 실버를 획득',                          diff: '입문', type: '솔로',      color: '#0c2640', icon: '🎣' },
   ],
 };
 
