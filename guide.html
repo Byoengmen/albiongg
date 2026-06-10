@@ -384,6 +384,226 @@
       border-top: 1px solid var(--border);
       letter-spacing: 0.3px;
     }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 200;
+      overflow-y: auto;
+      padding: 24px 16px;
+    }
+    .modal-overlay.open {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 860px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      animation: modalIn 0.22s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: var(--text-sub);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.16s;
+      z-index: 1;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+    .modal-body {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+    }
+    @media (max-width: 680px) {
+      .modal-body { grid-template-columns: 1fr; }
+    }
+    .modal-left {
+      padding: 28px 26px 22px;
+      border-right: 1px solid var(--border);
+    }
+    @media (max-width: 680px) {
+      .modal-left { border-right: none; border-bottom: 1px solid var(--border); padding: 22px 18px 18px; }
+    }
+    .modal-hdr {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 14px;
+      padding-right: 36px;
+    }
+    .modal-hdr-icon {
+      width: 50px; height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+    .modal-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.4px;
+    }
+    .modal-intro {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.75;
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-section { margin-bottom: 16px; }
+    .modal-section-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.75;
+      margin-bottom: 9px;
+    }
+    .zone-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .zone-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+    .zone-label {
+      font-weight: 700;
+      white-space: nowrap;
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+    .zone-blue  { color: #60a5fa; }
+    .zone-red   { color: #f87171; }
+    .zone-black { color: #c084fc; }
+    .modal-note {
+      margin-top: 10px;
+      padding: 8px 11px;
+      background: rgba(192,132,252,0.07);
+      border-left: 2px solid rgba(192,132,252,0.35);
+      border-radius: 0 6px 6px 0;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+    .modal-note a {
+      color: #c084fc;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .modal-note a:hover { text-decoration: underline; }
+    .modal-tip {
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.65;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.14);
+      border-radius: 8px;
+      padding: 10px 13px;
+    }
+    .modal-right {
+      padding: 28px 20px 22px;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (max-width: 680px) {
+      .modal-right { padding: 18px 18px 14px; }
+    }
+    .img-placeholder {
+      flex: 1;
+      min-height: 180px;
+      border: 1px dashed rgba(255,255,255,0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--bg-input);
+    }
+    .img-placeholder .ph-icon { font-size: 30px; opacity: 0.35; }
+    .img-placeholder p { font-size: 11.5px; color: var(--text-muted); text-align: center; line-height: 1.6; }
+    .modal-related {
+      padding: 16px 26px 20px;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 680px) {
+      .modal-related { padding: 14px 18px 18px; }
+    }
+    .modal-related-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .related-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .related-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.16s;
+      font-family: inherit;
+    }
+    .related-chip:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+    .chip-cat {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
   </style>
 </head>
 <body>
@@ -429,6 +649,13 @@
   알비온 온라인 한국어 정보 사이트 &nbsp;·&nbsp; 데이터는 게임 내 수치 기준 &nbsp;·&nbsp; Albion Online
 </footer>
 
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    <div id="modalInner"></div>
+  </div>
+</div>
+
 <script>
 // 난이도 → CSS 클래스 / 한글 표기
 const DIFF = { '입문': 'd0', '초급': 'd1', '중급': 'd2', '고급': 'd3' };
@@ -470,6 +697,25 @@ const DATA = {
   ],
 };
 
+const MODAL_DATA = {
+  '필드사냥': {
+    icon: '⚔️',
+    color: '#6b2d1c',
+    intro: '오픈 월드를 돌아다니며 몬스터를 사냥하는 가장 기본적인 콘텐츠.\n별도 입장 절차 없이 바로 시작할 수 있어 초보자에게 적합하다.',
+    zones: [
+      { label: '블루/옐로존', cls: 'zone-blue',  desc: '안전하게 사냥 가능, 페임·실버 효율은 낮음' },
+      { label: '레드존',      cls: 'zone-red',   desc: '효율이 좋지만 PvP가 허용되어 위험할 수 있음' },
+      { label: '블랙존',      cls: 'zone-black', desc: '효율 최고, 단 다른 플레이어 모두가 적이 될 수 있음' },
+    ],
+    tip: 'T4 장비 이상, 약탈자 레벨 확인 후 시작 권장',
+    related: [
+      { name: '갱킹',       cat: 'PvP',  type: 'modal' },
+      { name: '오픈 던전',  cat: 'PvE',  type: 'modal' },
+      { name: '페임 계산기', cat: '도구', type: 'link', href: 'index.html' },
+    ],
+  },
+};
+
 function buildCard(c) {
   return `
     <div class="guide-card">
@@ -483,7 +729,7 @@ function buildCard(c) {
           <span class="tag ${DIFF[c.diff]}">${c.diff}</span>
           <span class="tag dt">${c.type}</span>
         </div>
-        <button class="card-btn" onclick="wip(event)">자세히 보기</button>
+        <button class="card-btn" onclick="openModal('${c.name}')">자세히 보기</button>
       </div>
     </div>`;
 }
@@ -514,12 +760,71 @@ function wip(e) {
   alert('준비 중인 기능입니다.');
 }
 
+function openModal(name) {
+  const d = MODAL_DATA[name];
+  if (!d) { alert('준비 중인 기능입니다.'); return; }
+
+  const zones = d.zones.map(z =>
+    `<li><span class="zone-label ${z.cls}">${z.label}</span><span>${z.desc}</span></li>`
+  ).join('');
+
+  const related = d.related.map(r => {
+    if (r.type === 'link') {
+      return `<a class="related-chip" href="${r.href}"><span class="chip-cat">${r.cat}</span>${r.name}</a>`;
+    }
+    return `<button class="related-chip" onclick="openModal('${r.name}')"><span class="chip-cat">${r.cat}</span>${r.name}</button>`;
+  }).join('');
+
+  document.getElementById('modalInner').innerHTML = `
+    <div class="modal-body">
+      <div class="modal-left">
+        <div class="modal-hdr">
+          <div class="modal-hdr-icon" style="background:${d.color}">${d.icon}</div>
+          <div class="modal-title">${name}</div>
+        </div>
+        <p class="modal-intro">${d.intro.replace(/\n/g, '<br>')}</p>
+        <div class="modal-section">
+          <div class="modal-section-title">존별 특징</div>
+          <ul class="zone-list">${zones}</ul>
+          <p class="modal-note">→ 블랙존에서는 <a onclick="openModal('갱킹')">갱킹</a>을 주의해야 한다</p>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-title">추천 진입 시기</div>
+          <p class="modal-tip">${d.tip}</p>
+        </div>
+      </div>
+      <div class="modal-right">
+        <div class="img-placeholder">
+          <span class="ph-icon">📸</span>
+          <p>인게임 사진<br>준비 중</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-related">
+      <div class="modal-related-title">관련 콘텐츠</div>
+      <div class="related-list">${related}</div>
+    </div>
+  `;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 document.addEventListener('click', function(e) {
   const nav = document.querySelector('.navbar');
   if (nav && !nav.contains(e.target)) {
     document.getElementById('navBurger').classList.remove('open');
     document.getElementById('navMenu').classList.remove('open');
   }
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
 });
 
 renderAll();
