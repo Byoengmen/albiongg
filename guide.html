@@ -172,6 +172,125 @@
       gap: 12px;
     }
 
+    /* ── CARD COMPONENTS ── */
+    .content-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+      cursor: pointer;
+    }
+    .content-card:hover {
+      border-color: rgba(201,168,76,0.28);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+    }
+    .card-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #141330 0%, #1a1640 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; user-select: none;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .card-body {
+      padding: 14px 14px 12px;
+      display: flex; flex-direction: column; gap: 10px; flex: 1;
+    }
+    .card-name {
+      font-size: 14px; font-weight: 800; color: var(--text); letter-spacing: -0.3px;
+    }
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; margin-top: auto;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .card-tag {
+      font-size: 10px; font-weight: 700;
+      padding: 3px 8px; border-radius: 10px;
+      border: 1px solid var(--border);
+      color: var(--text-muted); background: rgba(255,255,255,0.03);
+      white-space: nowrap;
+    }
+    .card-tag.pve    { color: #6db8ff; border-color: rgba(109,184,255,0.25); background: rgba(109,184,255,0.07); }
+    .card-tag.pvp    { color: #ff7b7b; border-color: rgba(255,123,123,0.25); background: rgba(255,123,123,0.07); }
+    .card-tag.life   { color: #74d99f; border-color: rgba(116,217,159,0.25); background: rgba(116,217,159,0.07); }
+    .card-tag.solo   { color: #c9a84c; border-color: rgba(201,168,76,0.25);  background: rgba(201,168,76,0.07);  }
+    .card-tag.group  { color: #b87fff; border-color: rgba(184,127,255,0.25); background: rgba(184,127,255,0.07); }
+    .card-tag.large  { color: #ff9d4d; border-color: rgba(255,157,77,0.25);  background: rgba(255,157,77,0.07);  }
+    .card-tag.newbie { color: #4dd9d9; border-color: rgba(77,217,217,0.25);  background: rgba(77,217,217,0.07);  }
+    .detail-btn {
+      padding: 5px 12px; border-radius: 7px;
+      border: 1px solid var(--border);
+      background: transparent; color: var(--text-muted);
+      font-size: 11px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+    }
+    .detail-btn:hover {
+      color: var(--gold); border-color: rgba(201,168,76,0.4); background: var(--gold-dim);
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #13122a; border: 1px solid #2e2c50;
+      border-radius: 16px; width: 100%; max-width: 580px;
+      max-height: 82vh; overflow-y: auto;
+      padding: 28px 28px 24px;
+      animation: modalIn 0.2s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.97); }
+      to   { opacity: 1; transform: none; }
+    }
+    .modal-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 12px; margin-bottom: 20px;
+    }
+    .modal-title { font-size: 20px; font-weight: 900; color: var(--text); letter-spacing: -0.5px; }
+    .modal-close {
+      width: 30px; height: 30px; border-radius: 8px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-sub); font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.14s; flex-shrink: 0;
+    }
+    .modal-close:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+    .modal-section { margin-bottom: 20px; }
+    .modal-section:last-child { margin-bottom: 0; }
+    .modal-section-title {
+      font-size: 12px; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--gold); opacity: 0.8;
+      margin-bottom: 8px;
+    }
+    .modal-section p {
+      font-size: 13px; color: var(--text-sub); line-height: 1.85;
+    }
+    .modal-section ul {
+      list-style: none; display: flex; flex-direction: column; gap: 5px;
+    }
+    .modal-section ul li {
+      font-size: 13px; color: var(--text-sub); line-height: 1.7;
+      padding-left: 14px; position: relative;
+    }
+    .modal-section ul li::before {
+      content: '·'; position: absolute; left: 0; color: var(--gold); font-weight: 900;
+    }
+    .modal-related { display: flex; flex-wrap: wrap; gap: 6px; }
+    .modal-rel-tag {
+      font-size: 12px; font-weight: 700; color: var(--text-sub);
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 7px; padding: 4px 10px; cursor: pointer; transition: all 0.14s;
+    }
+    .modal-rel-tag:hover { color: var(--gold); border-color: rgba(201,168,76,0.4); background: var(--gold-dim); }
+
     /* ── FOOTER ── */
     footer {
       text-align: center; padding: 20px 16px;
@@ -245,11 +364,109 @@
   알비온 온라인의 모든 정보 &nbsp;·&nbsp; 데이터는 게임 내 수치 기준 &nbsp;·&nbsp; Albion Online
 </footer>
 
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
 <script>
+const TAG_CLASS = {
+  'PvE': 'pve', 'PvP': 'pvp', '생활': 'life',
+  '솔로': 'solo', '그룹': 'group', '대규모': 'large', '초보추천': 'newbie',
+};
+
+const CONTENTS = [
+  {
+    name: '제련·제작', icon: '⚒️', tags: ['생활', '솔로'],
+    modal: [
+      { title: '소개', text: '채집한 원료를 정제 원료로 변환하고, 이를 장비나 소모품으로 만드는 활동입니다.\n알비온의 모든 장비는 플레이어가 직접 만듭니다.' },
+      { title: '제련이란', text: '채집한 원료를 그냥 사용할 수는 없습니다. 제련소에서 정제 원료로 가공해야 제작에 사용할 수 있습니다.\n티어가 높아질수록 필요한 하위 티어 정제 원료와 원자재 양이 늘어납니다.' },
+      { title: '집중 포인트', text: '제련 시 집중 포인트를 사용하면 자원을 일부 돌려받을 수 있어 효율이 크게 오릅니다.\n대량 제련 전에는 집중 포인트 보유 여부를 반드시 확인하세요.' },
+      { title: '도시별 생산 보너스', list: [
+        '판자 → Fort Sterling (제재소)',
+        '직물 → Lymhurst (방직공)',
+        '석괴 → Bridgewatch (석공)',
+        '피혁 → Martlock (무두장이)',
+        '금속 막대 → Thetford (제련소)',
+      ], note: '같은 자원이라도 해당 도시에서 제련하면 더 많은 정제 원료를 얻을 수 있습니다.' },
+      { title: '변형', text: '원료가 부족할 때는 하위 티어 자원을 상위 티어로 변형할 수 있습니다 (최소 T4).\n제작소의 두 번째 탭에서 이용 가능합니다.' },
+      { title: '수익화', text: '일부 플레이어는 원료를 시장에서 저렴하게 구매해 제련 후 판매하는 방식으로 수익을 냅니다.\n정제 원료는 장비 제작 수요로 인해 항상 안정적인 시장이 형성되어 있습니다.' },
+      { title: '관련 콘텐츠', related: ['채집', '무역·경매장', '요리'] },
+    ],
+  },
+];
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let activeTag = '전체';
+
+function render() {
+  const filtered = activeTag === '전체'
+    ? CONTENTS
+    : CONTENTS.filter(c => c.tags.includes(activeTag));
+  document.getElementById('cardsGrid').innerHTML = filtered.map(c => `
+    <div class="content-card" onclick="openModal('${esc(c.name)}')">
+      <div class="card-thumb">${c.icon}</div>
+      <div class="card-body">
+        <div class="card-name">${esc(c.name)}</div>
+        <div class="card-footer">
+          <div class="card-tags">${c.tags.map(t => `<span class="card-tag ${TAG_CLASS[t]||''}">${esc(t)}</span>`).join('')}</div>
+          <button class="detail-btn" onclick="event.stopPropagation();openModal('${esc(c.name)}')">자세히</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
 function setTag(btn) {
   document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  activeTag = btn.textContent.trim();
+  render();
 }
+
+function openModal(name) {
+  const c = CONTENTS.find(x => x.name === name);
+  if (!c) return;
+  const sectionsHtml = c.modal.map(s => {
+    if (s.related) {
+      return `<div class="modal-section">
+        <div class="modal-section-title">${esc(s.title)}</div>
+        <div class="modal-related">${s.related.map(r => `<span class="modal-rel-tag">${esc(r)}</span>`).join('')}</div>
+      </div>`;
+    }
+    if (s.list) {
+      return `<div class="modal-section">
+        <div class="modal-section-title">${esc(s.title)}</div>
+        <ul>${s.list.map(li => `<li>${esc(li)}</li>`).join('')}</ul>
+        ${s.note ? `<p style="margin-top:8px">${esc(s.note)}</p>` : ''}
+      </div>`;
+    }
+    return `<div class="modal-section">
+      <div class="modal-section-title">${esc(s.title)}</div>
+      <p>${esc(s.text).replace(/\n/g,'<br>')}</p>
+    </div>`;
+  }).join('');
+  document.getElementById('modalBox').innerHTML = `
+    <div class="modal-header">
+      <span class="modal-title">${esc(c.name)}</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    ${sectionsHtml}
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+render();
 
 function toggleNav() {
   document.getElementById('navBurger').classList.toggle('open');
