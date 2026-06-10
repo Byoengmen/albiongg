@@ -395,8 +395,8 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="index.html"  class="nav-link">홈</a></li>
-      <li><a href="index.html"  class="nav-link">페임 계산기</a></li>
+      <li><a href="index.html"      class="nav-link">홈</a></li>
+      <li><a href="calculator.html" class="nav-link">페임 계산기</a></li>
       <li><a href="#"           class="nav-link" onclick="wip(event)">빌드 <span class="wip-badge">준비중</span></a></li>
       <li><a href="guide.html"  class="nav-link">가이드</a></li>
       <li><a href="player.html" class="nav-link active">전적 조회</a></li>
@@ -575,6 +575,22 @@ function wip(e) {
 document.getElementById('searchInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') doSearch();
 });
+
+// index.html 홈에서 검색 후 리다이렉트된 경우 자동 실행
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const server = params.get('server');
+  const q      = params.get('q');
+  if (server && ['west', 'east', 'europe'].includes(server)) {
+    currentServer = server;
+    document.querySelectorAll('.server-tab').forEach(t =>
+      t.classList.toggle('active', t.dataset.server === server));
+  }
+  if (q) {
+    document.getElementById('searchInput').value = q;
+    doSearch();
+  }
+})();
 
 document.addEventListener('click', e => {
   const nav = document.querySelector('.navbar');
