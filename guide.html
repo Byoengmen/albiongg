@@ -694,15 +694,12 @@ const DATA = {
     { name: '월드 보스',         desc: '오픈 월드에 출현하는 강력한 보스',                                   diff: '고급', type: '그룹',      color: '#4d0c0c', icon: '👾' },
   ],
   pvp: [
-    { name: '헬게이트',          desc: '2v2 또는 5v5 PvP 전투 콘텐츠',                                     diff: '중급', type: '그룹',      color: '#5e1616', icon: '🔥' },
-    { name: '팩션 워페어',       desc: '도시 팩션에 가입해 오픈 월드 PvP에 참여',                           diff: '초급', type: '솔로·그룹', color: '#4d330c', icon: '🏴' },
-    { name: '갱킹',              desc: '오픈 월드에서 다른 플레이어를 기습',                                 diff: '중급', type: '솔로·그룹', color: '#3d1616', icon: '🗡️' },
-    { name: '아레나',            desc: '인스턴스 PvP 전투',                                                diff: '초급', type: '그룹',      color: '#162652', icon: '🏆' },
-    { name: 'GvG',               desc: '길드 간 5v5 영토 전투',                                            diff: '고급', type: '그룹',      color: '#4d1626', icon: '⚔️' },
-    { name: 'ZvZ',               desc: '대규모 길드 간 전투',                                              diff: '고급', type: '대규모',    color: '#160c33', icon: '💥' },
-    { name: '영토 점령',         desc: '길드가 영토를 점령하고 방어',                                        diff: '고급', type: '대규모',    color: '#3d330c', icon: '🏰' },
-    { name: '결투',              desc: '1v1 합의 PvP',                                                     diff: '초급', type: '솔로',      color: '#16334d', icon: '🤺' },
-    { name: '심연의 구렁',       desc: '2025년 신규, PvP 입문용 훈련 콘텐츠',                               diff: '초급', type: '솔로·그룹', color: '#261652', icon: '🌀' },
+    { name: '결투',              desc: '마을 내 합의 하에 진행하는 1v1 PvP. 아이템 손실 없이 순수하게 실력을 겨룬다.',   diff: '입문', type: '솔로',      color: '#16334d', icon: '🤺' },
+    { name: '갱킹',              desc: '오픈 월드에서 다른 플레이어를 기습하는 PvP. 레드·블랙존의 핵심 긴장 요소.',     diff: '중급', type: '솔로·그룹', color: '#3d1616', icon: '🗡️' },
+    { name: '오픈필드 오브젝트', desc: '오픈 월드 보상 오브젝트를 두고 플레이어 간 자연스러운 PvP가 발생한다.',        diff: '초급', type: '솔로·그룹', color: '#3d2800', icon: '📦' },
+    { name: 'ZvZ',               desc: '길드·연합 단위의 대규모 집단 전투. 알비온 PvP의 꽃이라 불린다.',              diff: '고급', type: '대규모',    color: '#160c33', icon: '💥' },
+    { name: '인스턴스 PvP',      desc: '별도 인스턴스에서 진행되는 PvP 콘텐츠 모음 (헬게이트·아레나·심연 등).',       diff: '초급', type: '솔로·그룹', color: '#1a1040', icon: '⚡' },
+    { name: '파벌 전쟁',         desc: '5대 도시 팩션 가입 후 오픈 월드에서 적 팩션과 싸우는 콘텐츠.',                diff: '초급', type: '솔로·그룹', color: '#4d330c', icon: '🏴' },
   ],
   life: [
     { name: '채집',              desc: '오픈 월드에서 자원을 수집',                                         diff: '입문', type: '솔로',      color: '#0c361c', icon: '🌿' },
@@ -875,6 +872,101 @@ const MODAL_DATA = {
     related: [
       { name: '아발로니안 던전', cat: 'PvE', type: 'modal' },
       { name: '스태틱 던전',    cat: 'PvE', type: 'modal' },
+    ],
+  },
+  '결투': {
+    icon: '🤺',
+    color: '#16334d',
+    intro: '마을 안에서 다른 플레이어와 합의 하에 진행하는 1v1 PvP. 아이템 손실 없이 순수하게 실력을 겨룰 수 있다.',
+    features: [
+      '완전 비살상, 아이템·내구도 손실 없음',
+      '마을 내 어디서든 신청 가능',
+      'PvP 입문자에게 적합',
+    ],
+    tip: '장비 무관',
+    related: [
+      { name: '아레나',      cat: 'PvP', type: 'modal' },
+      { name: '오염된 던전', cat: 'PvE', type: 'modal' },
+    ],
+  },
+  '갱킹': {
+    icon: '🗡️',
+    color: '#3d1616',
+    intro: '오픈 월드에서 다른 플레이어를 기습하는 PvP. 알비온 오픈 월드의 긴장감을 만드는 핵심 요소다.',
+    features: [
+      '레드·블랙존에서 주로 발생',
+      '채집자·사냥꾼을 노리는 경우가 많음',
+      '필드사냥·채집 시 항상 주의 필요',
+    ],
+    tip: 'T4 이상, 도주 스킬 이해 권장',
+    related: [
+      { name: '필드사냥',  cat: 'PvE', type: 'modal' },
+      { name: '파벌 전쟁', cat: 'PvP', type: 'modal' },
+    ],
+  },
+  '오픈필드 오브젝트': {
+    icon: '📦',
+    color: '#3d2800',
+    intro: '오픈 월드 곳곳에 존재하는 보상 오브젝트. 먹으려는 플레이어들 간의 자연스러운 PvP가 발생한다.',
+    features: [
+      '보물 상자: 오픈 월드 랜덤 출현, 열기 전까지 다른 플레이어에게 노출',
+      '자원 보물: 채집 자원이 밀집된 고가치 지점',
+      '크리스탈 거미: 처치 시 크리스탈 보상, 주변 플레이어와 경쟁',
+    ],
+    tip: 'T5 이상',
+    related: [
+      { name: '갱킹',    cat: 'PvP', type: 'modal' },
+      { name: '필드사냥', cat: 'PvE', type: 'modal' },
+    ],
+  },
+  'ZvZ': {
+    icon: '💥',
+    color: '#160c33',
+    intro: '길드 혹은 연합 단위로 벌어지는 대규모 집단 전투. 알비온 PvP의 꽃이라 불린다.',
+    features: [
+      '수십~수백 명이 맞붙는 대규모 전투',
+      '영토 점령, 월드 보스, 아발로니안 던전 등과 연계',
+      '역할 분담(탱커/딜러/힐러/서포터)과 지휘 체계가 중요',
+      '대형 길드·연합 소속 필수',
+    ],
+    tip: 'T8 장비 이상, 대형 길드 활동 필수',
+    related: [
+      { name: '파벌 전쟁',      cat: 'PvP', type: 'modal' },
+      { name: '아발로니안 던전', cat: 'PvE', type: 'modal' },
+    ],
+  },
+  '인스턴스 PvP': {
+    icon: '⚡',
+    color: '#1a1040',
+    intro: '오픈 월드가 아닌 별도 인스턴스에서 진행되는 PvP 콘텐츠 모음. 2025년 패치 이후 도시 내 골동품 수집가의 아지트에서 바로 진입 가능하다.',
+    features: [
+      '미스트(안개): 솔로/듀오 전용. PvE와 PvP 혼재. 브레실리엔 도시 진입 가능 <a onclick="openModal(\'미스트\')" style="color:#c084fc;font-weight:700;cursor:pointer;text-decoration:none;">→ 자세히</a>',
+      '오염된 던전: 솔로 1v1 PvP. 헌터/스토커/슬레이어 3단계 난이도 <a onclick="openModal(\'오염된 던전\')" style="color:#c084fc;font-weight:700;cursor:pointer;text-decoration:none;">→ 자세히</a>',
+      '헬게이트: 오던의 팀전 버전. 2v2·5v5·10v10. 비살상/살상 모드',
+      '심연: 2025년 신규. 듀오/트리오 전용. 오렌지존(장비 비손실·인벤 손실)',
+      '아레나: 5v5 무작위 매칭. 완전 비살상. PvP 입문자 추천',
+      '크리스탈 리그: 알비온 PvP 엔드콘텐츠. 5v5·20v20. 시즌 포인트·대회 연계',
+    ],
+    tip: '아레나 T4 이상 / 헬게이트·오던 T6 이상 / 크리스탈 리그 고수 전용',
+    related: [
+      { name: '결투', cat: 'PvP', type: 'modal' },
+      { name: '갱킹', cat: 'PvP', type: 'modal' },
+    ],
+  },
+  '파벌 전쟁': {
+    icon: '🏴',
+    color: '#4d330c',
+    intro: '알비온 5대 도시 팩션 중 하나에 가입해 오픈 월드에서 적 팩션 플레이어와 싸우는 콘텐츠.',
+    features: [
+      '팩션 가입 후 팩션 깃발 착용 시 적 팩션 플레이어와 PvP 가능',
+      '팩션 포인트로 팩션 전용 장비·탈것 구매 가능',
+      '솔로부터 대규모까지 다양한 규모로 참여 가능',
+      '2025년 패치로 팩션 전쟁 시스템 대폭 개편',
+    ],
+    tip: 'T6 이상',
+    related: [
+      { name: '갱킹', cat: 'PvP', type: 'modal' },
+      { name: 'ZvZ',  cat: 'PvP', type: 'modal' },
     ],
   },
 };
