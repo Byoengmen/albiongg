@@ -604,6 +604,26 @@
       color: var(--text-muted);
       border: 1px solid var(--border);
     }
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .feature-list li {
+      display: flex;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+    .feature-list li::before {
+      content: '·';
+      color: var(--gold);
+      font-weight: 700;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
   </style>
 </head>
 <body>
@@ -666,6 +686,7 @@ const DATA = {
     { name: '오픈 던전',         desc: '누구나 입장 가능한 개방형 던전, 다른 플레이어와 마주칠 수 있음',       diff: '초급', type: '솔로·그룹', color: '#4a2266', icon: '🏛️' },
     { name: '솔로 던전',         desc: '혼자만 입장 가능한 인스턴스 던전',                                   diff: '초급', type: '솔로',      color: '#183352', icon: '🗡️' },
     { name: '그룹 던전',         desc: '파티를 구성해 함께 공략하는 던전',                                   diff: '중급', type: '그룹',      color: '#331a55', icon: '🛡️' },
+    { name: '오염된 던전',       desc: 'PvE 진행 중 다른 플레이어의 침입이 가능한 1v1 콘텐츠',               diff: '중급', type: '솔로',      color: '#3d0c26', icon: '🩸' },
     { name: '스태틱 던전',       desc: '고정 위치에 존재하는 던전, 높은 페임 효율',                           diff: '중급', type: '솔로·그룹', color: '#252252', icon: '🏰' },
     { name: '아발로니안 던전',   desc: '아발로니안 세계관의 고난이도 던전',                                   diff: '고급', type: '그룹',      color: '#0c3636', icon: '✨' },
     { name: '원정대',            desc: '안전한 인스턴스 PvE 콘텐츠',                                        diff: '입문', type: '솔로·그룹', color: '#163362', icon: '🗺️' },
@@ -673,7 +694,6 @@ const DATA = {
     { name: '미스트',            desc: '안개 속 탐험 콘텐츠, PvE와 PvP가 혼재',                             diff: '중급', type: '솔로',      color: '#143636', icon: '🌫️' },
     { name: '미스트 던전',       desc: '미스트 내부의 인스턴스 던전',                                        diff: '중급', type: '솔로',      color: '#0c2b2b', icon: '🏔️' },
     { name: '월드 보스',         desc: '오픈 월드에 출현하는 강력한 보스',                                   diff: '고급', type: '그룹',      color: '#4d0c0c', icon: '👾' },
-    { name: '부패한 던전',       desc: 'PvE 진행 중 다른 플레이어의 침입이 가능한 1v1 콘텐츠',               diff: '중급', type: '솔로',      color: '#3d0c26', icon: '🩸' },
   ],
   pvp: [
     { name: '헬게이트',          desc: '2v2 또는 5v5 PvP 전투 콘텐츠',                                     diff: '중급', type: '그룹',      color: '#5e1616', icon: '🔥' },
@@ -712,6 +732,71 @@ const MODAL_DATA = {
       { name: '갱킹',       cat: 'PvP',  type: 'modal' },
       { name: '오픈 던전',  cat: 'PvE',  type: 'modal' },
       { name: '페임 계산기', cat: '도구', type: 'link', href: 'index.html' },
+    ],
+  },
+  '오픈 던전': {
+    icon: '🏛️',
+    color: '#4a2266',
+    intro: '오픈 월드 곳곳에 입구가 존재하는 개방형 던전. 입장 제한이 없어 다른 플레이어와 마주칠 수 있다.',
+    features: [
+      '누구나 자유롭게 입장 가능',
+      '다른 플레이어가 난입할 수 있어 PvP 상황이 발생할 수 있음',
+      '솔로 또는 소규모 그룹으로 진행',
+    ],
+    tip: 'T4 장비 이상',
+    related: [
+      { name: '필드사냥',  cat: 'PvE', type: 'modal' },
+      { name: '솔로 던전', cat: 'PvE', type: 'modal' },
+      { name: '갱킹',      cat: 'PvP', type: 'modal' },
+    ],
+  },
+  '솔로 던전': {
+    icon: '🗡️',
+    color: '#183352',
+    intro: '혼자만 입장 가능한 인스턴스 던전. 방해 없이 조용히 페임과 실버를 파밍할 수 있다.',
+    features: [
+      '1인 전용 인스턴스, 타 플레이어 입장 불가',
+      '입장 후 일정 시간이 지나면 입구가 닫힘',
+      '여러 방으로 구성되며 마지막 보스 처치 시 완료',
+    ],
+    tip: 'T4 장비 이상',
+    related: [
+      { name: '오픈 던전',   cat: 'PvE',  type: 'modal' },
+      { name: '오염된 던전', cat: 'PvE',  type: 'modal' },
+      { name: '페임 계산기', cat: '도구', type: 'link', href: 'index.html' },
+    ],
+  },
+  '그룹 던전': {
+    icon: '🛡️',
+    color: '#331a55',
+    intro: '파티를 구성해 함께 공략하는 던전. 혼자서는 버거운 강력한 몬스터와 보스가 등장한다.',
+    features: [
+      '2인 이상 파티 구성 권장',
+      '솔로 던전 대비 높은 페임·실버 효율',
+      '역할 분담(딜/탱/힐)이 중요',
+    ],
+    tip: 'T5 장비 이상',
+    related: [
+      { name: '솔로 던전',   cat: 'PvE', type: 'modal' },
+      { name: '스태틱 던전', cat: 'PvE', type: 'modal' },
+      { name: '헬게이트',    cat: 'PvP', type: 'modal' },
+    ],
+  },
+  '오염된 던전': {
+    icon: '🩸',
+    color: '#3d0c26',
+    intro: '솔로 PvE를 진행하다 다른 플레이어의 침입을 받을 수 있는 특수 던전. PvE와 PvP가 동시에 존재한다.',
+    features: [
+      '난이도 3단계: 헌터(입문) / 스토커(중급) / 슬레이어(고급)',
+      '던전 진행 중 다른 플레이어가 1v1로 침입 가능',
+      '침입자는 던전 내 악마 파편을 파괴해 퇴치하거나 직접 결투로 처치 가능',
+      '인파미(Infamy) 포인트로 더 높은 난이도 해금',
+    ],
+    tip: 'T6 장비 이상, 1v1 PvP 경험 권장',
+    related: [
+      { name: '솔로 던전', cat: 'PvE', type: 'modal' },
+      { name: '미스트',    cat: 'PvE', type: 'modal' },
+      { name: '결투',      cat: 'PvP', type: 'modal' },
     ],
   },
 };
@@ -764,9 +849,25 @@ function openModal(name) {
   const d = MODAL_DATA[name];
   if (!d) { alert('준비 중인 기능입니다.'); return; }
 
-  const zones = d.zones.map(z =>
-    `<li><span class="zone-label ${z.cls}">${z.label}</span><span>${z.desc}</span></li>`
-  ).join('');
+  let contentSection = '';
+  if (d.zones) {
+    const zoneItems = d.zones.map(z =>
+      `<li><span class="zone-label ${z.cls}">${z.label}</span><span>${z.desc}</span></li>`
+    ).join('');
+    contentSection = `
+      <div class="modal-section">
+        <div class="modal-section-title">존별 특징</div>
+        <ul class="zone-list">${zoneItems}</ul>
+        <p class="modal-note">→ 블랙존에서는 <a onclick="openModal('갱킹')">갱킹</a>을 주의해야 한다</p>
+      </div>`;
+  } else if (d.features) {
+    const featureItems = d.features.map(f => `<li>${f}</li>`).join('');
+    contentSection = `
+      <div class="modal-section">
+        <div class="modal-section-title">특징</div>
+        <ul class="feature-list">${featureItems}</ul>
+      </div>`;
+  }
 
   const related = d.related.map(r => {
     if (r.type === 'link') {
@@ -783,11 +884,7 @@ function openModal(name) {
           <div class="modal-title">${name}</div>
         </div>
         <p class="modal-intro">${d.intro.replace(/\n/g, '<br>')}</p>
-        <div class="modal-section">
-          <div class="modal-section-title">존별 특징</div>
-          <ul class="zone-list">${zones}</ul>
-          <p class="modal-note">→ 블랙존에서는 <a onclick="openModal('갱킹')">갱킹</a>을 주의해야 한다</p>
-        </div>
+        ${contentSection}
         <div class="modal-section">
           <div class="modal-section-title">추천 진입 시기</div>
           <p class="modal-tip">${d.tip}</p>
