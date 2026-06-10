@@ -285,6 +285,10 @@
       width: 32px; height: 32px; flex-shrink: 0;
       image-rendering: auto;
     }
+    .zone-dot {
+      display: inline-block; width: 12px; height: 12px;
+      border-radius: 50%; flex-shrink: 0;
+    }
     .modal-section ul li.dot-item {
       padding-left: 14px; position: relative;
     }
@@ -407,10 +411,10 @@ const CONTENTS = [
     modal: [
       { title: '소개', text: '알비온의 세계는 블루, 옐로우, 레드, 블랙 네 가지 지역으로 구분됩니다.\n지역마다 PvP 규칙이 다르며, 전투 결과도 달라집니다.' },
       { title: '지역별 규칙', list: [
-        '블루존: 완전 안전 구역. PvP 불가.',
-        '옐로존: PvP 가능하나 사망해도 장비를 잃지 않습니다. 체력이 0이 되면 쓰러지며, 장착 장비 내구도 5%가 감소합니다.',
-        '레드존: 사망 시 보유한 모든 아이템이 드롭됩니다. 일부는 폐기되고 나머지는 다른 플레이어가 획득할 수 있습니다.',
-        '블랙존(아웃랜드): 레드존과 동일한 사망 규칙이 적용됩니다. 별도의 전투 상태 활성화 없이 항상 PvP가 가능합니다.',
+        { color: '#4A90D9',                          text: '블루존: 완전 안전 구역. PvP 불가.' },
+        { color: '#F5C518',                          text: '옐로존: PvP 가능하나 사망해도 장비를 잃지 않습니다. 체력이 0이 되면 쓰러지며, 장착 장비 내구도 5%가 감소합니다.' },
+        { color: '#E84040',                          text: '레드존: 사망 시 보유한 모든 아이템이 드롭됩니다. 일부는 폐기되고 나머지는 다른 플레이어가 획득할 수 있습니다.' },
+        { color: '#333333', border: '1px solid #aaa', text: '블랙존(아웃랜드): 레드존과 동일한 사망 규칙이 적용됩니다. 별도의 전투 상태 활성화 없이 항상 PvP가 가능합니다.' },
       ]},
       { title: '전투 상태 활성화', text: '화면 왼쪽 상단의 파란색 방패 아이콘을 클릭하면 전투 상태를 활성화할 수 있습니다.\n활성화까지 15초간 정지 상태를 유지해야 합니다.\n옐로우·레드존에서 전투 상태를 활성화하면 다른 플레이어를 공격할 수 있습니다.\n단, 전투 상태가 아닌 플레이어를 공격하면 평판이 하락하며, 평판이 너무 낮아지면 로얄 대륙에서 추방될 수 있습니다.' },
       { title: '무리 표시', text: '11명 이상의 플레이어가 가까이 모여 이동하면 미니맵에 빨간색 무리 표시가 나타납니다.\n인원이 많을수록 표시되는 원이 커집니다.\n아발론의 길에서는 8명부터 표시됩니다.' },
@@ -465,7 +469,8 @@ function openModal(name) {
       return `<div class="modal-section">
         <div class="modal-section-title">${esc(s.title)}</div>
         <ul>${s.list.map(li => typeof li === 'object'
-          ? `<li><img class="li-icon" src="https://render.albiononline.com/v1/item/${li.icon}.png" alt="${esc(li.text)}" width="32" height="32"><span>${esc(li.text)}</span></li>`
+          li.icon  ? `<li><img class="li-icon" src="https://render.albiononline.com/v1/item/${li.icon}.png" alt="${esc(li.text)}" width="32" height="32"><span>${esc(li.text)}</span></li>`
+          : li.color ? `<li><span class="zone-dot" style="background:${li.color};${li.border?'border:'+li.border:''}"></span><span>${esc(li.text)}</span></li>`
           : `<li class="dot-item">${esc(li)}</li>`
         ).join('')}</ul>
         ${s.note ? `<p style="margin-top:8px">${esc(s.note)}</p>` : ''}
