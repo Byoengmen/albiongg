@@ -183,6 +183,31 @@
       color: var(--text-sub);
     }
 
+    /* ── SERVER TABS ── */
+    .server-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .server-tab {
+      padding: 7px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.16s;
+    }
+    .server-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .server-tab.active {
+      color: var(--gold);
+      background: var(--gold-dim);
+      border-color: rgba(201,168,76,0.3);
+    }
+
     /* ── SEARCH ── */
     .search-section {
       max-width: 640px;
@@ -388,6 +413,11 @@
 </header>
 
 <div class="search-section">
+  <div class="server-tabs">
+    <button class="server-tab"        data-server="west"   onclick="selectServer(this)">아메리카</button>
+    <button class="server-tab active" data-server="east"   onclick="selectServer(this)">아시아</button>
+    <button class="server-tab"        data-server="europe" onclick="selectServer(this)">유럽</button>
+  </div>
   <div class="search-row">
     <input type="text" id="searchInput" class="search-input" placeholder="닉네임 입력..." autocomplete="off" />
     <button class="search-btn" id="searchBtn" onclick="doSearch()">검색</button>
@@ -407,6 +437,13 @@
 
 <script>
 let lastResults = [];
+let currentServer = 'east';
+
+function selectServer(btn) {
+  document.querySelectorAll('.server-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  currentServer = btn.dataset.server;
+}
 
 async function doSearch() {
   const q = document.getElementById('searchInput').value.trim();
@@ -416,7 +453,7 @@ async function doSearch() {
   showContent(`<div class="status-msg"><div class="spinner"></div>검색 중...</div>`);
 
   try {
-    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&server=${currentServer}`);
     if (!res.ok) throw new Error('search failed');
     const data = await res.json();
     lastResults = data.players || [];
@@ -457,7 +494,7 @@ async function loadPlayer(id) {
   `);
 
   try {
-    const res = await fetch(`/api/player?id=${encodeURIComponent(id)}`);
+    const res = await fetch(`/api/player?id=${encodeURIComponent(id)}&server=${currentServer}`);
     if (!res.ok) throw new Error('player fetch failed');
     const p = await res.json();
     renderDetail(p);
