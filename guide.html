@@ -173,8 +173,8 @@
     }
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
     }
     .content-card {
       background: var(--bg-card);
@@ -194,25 +194,21 @@
       width: 100%; aspect-ratio: 16/9;
       background: linear-gradient(135deg, #141330 0%, #1a1640 100%);
       display: flex; align-items: center; justify-content: center;
-      font-size: 40px; user-select: none;
+      font-size: 36px; user-select: none;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
     .card-body {
-      padding: 16px 16px 14px;
-      display: flex; flex-direction: column; gap: 8px; flex: 1;
+      padding: 14px 14px 12px;
+      display: flex; flex-direction: column; gap: 10px; flex: 1;
     }
     .card-name {
-      font-size: 15px; font-weight: 800; color: var(--text);
+      font-size: 14px; font-weight: 800; color: var(--text);
       letter-spacing: -0.3px;
-    }
-    .card-desc {
-      font-size: 12px; color: var(--text-sub); line-height: 1.65;
-      flex: 1;
     }
     .card-footer {
       display: flex; align-items: center; justify-content: space-between;
-      gap: 8px; margin-top: 4px;
+      gap: 8px; margin-top: auto;
     }
     .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
     .card-tag {
@@ -273,7 +269,6 @@
       transition: all 0.14s; flex-shrink: 0;
     }
     .modal-close:hover { color: var(--text); background: rgba(255,255,255,0.06); }
-    .modal-body { font-size: 14px; color: var(--text-sub); line-height: 1.9; }
     .modal-wip {
       text-align: center; padding: 32px 0;
       color: var(--text-muted); font-size: 13px;
@@ -345,7 +340,6 @@
   알비온 온라인의 모든 정보 &nbsp;·&nbsp; 데이터는 게임 내 수치 기준 &nbsp;·&nbsp; Albion Online
 </footer>
 
-<!-- 모달 -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal-box" id="modalBox"></div>
 </div>
@@ -359,31 +353,31 @@ const TAG_CLASS = {
 };
 
 const CONTENTS = [
-  { name: '필드사냥',    icon: '⚔️',  desc: '오픈 월드에서 몬스터를 처치해 페임과 실버를 획득하는 기본 콘텐츠.',    tags: ['PvE','솔로','그룹','초보추천'] },
-  { name: '오픈 던전',   icon: '🏚️',  desc: '오픈 월드 곳곳에 위치한 공용 던전. 다른 플레이어와 마주칠 수 있다.',  tags: ['PvE','솔로','그룹'] },
-  { name: '솔로 던전',   icon: '🗝️',  desc: '혼자 입장하는 인스턴스 던전. 페임 효율이 높아 성장에 적합하다.',      tags: ['PvE','솔로','초보추천'] },
-  { name: '그룹 던전',   icon: '🏰',  desc: '파티를 이뤄 공략하는 인스턴스 던전. 고난이도·고보상.',               tags: ['PvE','그룹'] },
-  { name: '스태틱 던전', icon: '🗺️',  desc: '오픈 월드 고정 위치에 존재하는 대형 인스턴스 던전.',                 tags: ['PvE','그룹'] },
-  { name: '아발로니안 던전', icon: '🌀', desc: '대규모 공격대가 입장하는 고난이도 던전. 최고 등급 보상 드롭.',      tags: ['PvE','대규모'] },
-  { name: '원정대',      icon: '🧭',  desc: '도시에서 의뢰를 받아 인스턴스 던전을 공략하는 콘텐츠. 안전하게 입문 가능.', tags: ['PvE','솔로','그룹','초보추천'] },
-  { name: '하드코어 원정대', icon: '💀', desc: 'HCE. 최고 난이도 원정대. T8 최고급 장비가 필수.',               tags: ['PvE','그룹'] },
-  { name: '미스트',      icon: '🌫️',  desc: '안개 속 특수 지역. PvE와 PvP가 혼재하며 희귀 보상을 노릴 수 있다.',  tags: ['PvE','PvP','솔로'] },
-  { name: '월드 보스',   icon: '🐉',  desc: '오픈 월드에 등장하는 대형 보스. 다수 플레이어가 협력해 처치한다.',    tags: ['PvE','대규모'] },
-  { name: '오염된 던전', icon: '☠️',  desc: '1v1 PvP 인스턴스 콘텐츠. 인파미 포인트를 쌓아 강한 상대와 매칭된다.', tags: ['PvP','솔로'] },
-  { name: '결투',        icon: '🤺',  desc: '플레이어 간 1v1 자유 결투. 별도의 PvP 입문으로 적합하다.',           tags: ['PvP','솔로','초보추천'] },
-  { name: '갱킹',        icon: '🗡️',  desc: '오픈 월드에서 다른 플레이어를 기습 공격하는 PvP 플레이.',            tags: ['PvP','솔로','그룹'] },
-  { name: '헬게이트',    icon: '🔥',  desc: '2v2·5v5·10v10 팀 PvP 인스턴스 콘텐츠.',                           tags: ['PvP','그룹'] },
-  { name: '심연',        icon: '🌑',  desc: '소규모 팀 간 PvP 인스턴스 콘텐츠.',                                 tags: ['PvP','그룹'] },
-  { name: '아레나',      icon: '🏟️',  desc: '5v5 팀 PvP 인스턴스. 장비 평준화가 적용되어 실력 위주로 겨룬다.',    tags: ['PvP','그룹','초보추천'] },
-  { name: '크리스탈 리그', icon: '💎', desc: '랭킹 기반 5v5 경쟁 PvP 시즌 콘텐츠.',                             tags: ['PvP','그룹'] },
-  { name: '파벌 전쟁',   icon: '🏴',  desc: '도시 파벌에 가입해 영역을 점령하는 지속형 PvP 콘텐츠.',             tags: ['PvP','솔로','그룹'] },
-  { name: 'ZvZ',         icon: '⚡',  desc: '길드·연합 단위의 대규모 집단 전투. 알비온 최대 규모 PvP.',           tags: ['PvP','대규모'] },
-  { name: '채집',        icon: '🌿',  desc: '오픈 월드에서 원자재를 수집하는 생활 콘텐츠. 제련·제작의 기반.',      tags: ['생활','솔로','초보추천'] },
-  { name: '낚시',        icon: '🎣',  desc: '강·바다에서 물고기를 잡는 여가형 생활 콘텐츠.',                      tags: ['생활','솔로','초보추천'] },
-  { name: '제련·제작',   icon: '⚒️',  desc: '채집한 자재를 가공하거나 장비·소비 아이템을 제작하는 콘텐츠.',       tags: ['생활','솔로'] },
-  { name: '요리',        icon: '🍳',  desc: '식재료로 음식을 만들어 버프 아이템을 생산하는 콘텐츠.',              tags: ['생활','솔로'] },
-  { name: '농사·동물키우기', icon: '🌾', desc: '토지에 작물을 재배하거나 동물을 길러 자원을 수급하는 콘텐츠.',    tags: ['생활','솔로'] },
-  { name: '무역·경매장', icon: '💰',  desc: '도시 간 가격 차이를 이용한 무역, 경매장 시세를 활용한 거래 콘텐츠.',  tags: ['생활','솔로','초보추천'] },
+  { name: '필드사냥',        icon: '⚔️',  tags: ['PvE','솔로','그룹','초보추천'] },
+  { name: '오픈 던전',       icon: '🏚️',  tags: ['PvE','솔로','그룹'] },
+  { name: '솔로 던전',       icon: '🗝️',  tags: ['PvE','솔로','초보추천'] },
+  { name: '그룹 던전',       icon: '🏰',  tags: ['PvE','그룹'] },
+  { name: '스태틱 던전',     icon: '🗺️',  tags: ['PvE','그룹'] },
+  { name: '아발로니안 던전', icon: '🌀',  tags: ['PvE','대규모'] },
+  { name: '원정대',          icon: '🧭',  tags: ['PvE','솔로','그룹','초보추천'] },
+  { name: '하드코어 원정대', icon: '💀',  tags: ['PvE','그룹'] },
+  { name: '미스트',          icon: '🌫️',  tags: ['PvE','PvP','솔로'] },
+  { name: '월드 보스',       icon: '🐉',  tags: ['PvE','대규모'] },
+  { name: '오염된 던전',     icon: '☠️',  tags: ['PvP','솔로'] },
+  { name: '결투',            icon: '🤺',  tags: ['PvP','솔로','초보추천'] },
+  { name: '갱킹',            icon: '🗡️',  tags: ['PvP','솔로','그룹'] },
+  { name: '헬게이트',        icon: '🔥',  tags: ['PvP','그룹'] },
+  { name: '심연',            icon: '🌑',  tags: ['PvP','그룹'] },
+  { name: '아레나',          icon: '🏟️',  tags: ['PvP','그룹','초보추천'] },
+  { name: '크리스탈 리그',   icon: '💎',  tags: ['PvP','그룹'] },
+  { name: '파벌 전쟁',       icon: '🏴',  tags: ['PvP','솔로','그룹'] },
+  { name: 'ZvZ',             icon: '⚡',  tags: ['PvP','대규모'] },
+  { name: '채집',            icon: '🌿',  tags: ['생활','솔로','초보추천'] },
+  { name: '낚시',            icon: '🎣',  tags: ['생활','솔로','초보추천'] },
+  { name: '제련·제작',       icon: '⚒️',  tags: ['생활','솔로'] },
+  { name: '요리',            icon: '🍳',  tags: ['생활','솔로'] },
+  { name: '농사·동물키우기', icon: '🌾',  tags: ['생활','솔로'] },
+  { name: '무역·경매장',     icon: '💰',  tags: ['생활','솔로','초보추천'] },
 ];
 
 function esc(s) {
@@ -410,7 +404,6 @@ function render() {
       <div class="card-thumb">${c.icon}</div>
       <div class="card-body">
         <div class="card-name">${esc(c.name)}</div>
-        <div class="card-desc">${esc(c.desc)}</div>
         <div class="card-footer">
           <div class="card-tags">
             ${c.tags.map(t => `<span class="card-tag ${TAG_CLASS[t] || ''}">${esc(t)}</span>`).join('')}
@@ -436,11 +429,9 @@ function openModal(name) {
       <span class="modal-title">${esc(c.name)}</span>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-body">
-      <div class="modal-wip">
-        <span class="modal-wip-icon">🚧</span>
-        상세 내용을 준비 중입니다.
-      </div>
+    <div class="modal-wip">
+      <span class="modal-wip-icon">🚧</span>
+      상세 내용을 준비 중입니다.
     </div>
   `;
   document.getElementById('modalOverlay').classList.add('open');
