@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>알비온 온라인 — 플레이어 전적 조회</title>
+  <meta name="description" content="알비온 온라인 플레이어 닉네임으로 킬/데스 전적을 조회합니다.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b0b18;
+      --bg-card:   #111127;
+      --bg-input:  #181730;
+      --border:    #242240;
+      --gold:      #c9a84c;
+      --gold-dim:  rgba(201,168,76,0.12);
+      --gold-glow: rgba(201,168,76,0.30);
+      --text:      #e4ddd0;
+      --text-sub:  #7d758f;
+      --text-muted:#393558;
+      --blue:      #60a5fa;
+      --red:       #f87171;
+      --green:     #4ade80;
+      --r:         13px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, '맑은 고딕', sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* ── NAV ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11,11,24,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+    .nav-logo span { color: var(--text); font-weight: 400; }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-decoration: none;
+      transition: all 0.16s;
+      white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: var(--gold); background: var(--gold-dim); }
+    .wip-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      padding: 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--text-sub);
+      transition: all 0.22s ease;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    @media (max-width: 640px) {
+      .nav-hamburger { display: flex; }
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 54px;
+        left: 0; right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        background: rgba(13,13,28,0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 12px 12px;
+        gap: 2px;
+      }
+      .nav-menu.open { display: flex; }
+      .nav-link { padding: 10px 14px; font-size: 14px; }
+    }
+
+    /* ── HEADER ── */
+    .hdr {
+      position: relative;
+      text-align: center;
+      padding: 36px 16px 26px;
+      background: linear-gradient(180deg, #0e0c26 0%, var(--bg) 100%);
+      overflow: hidden;
+    }
+    .hdr::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hdr::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.45), transparent);
+    }
+    .hdr-inner { position: relative; z-index: 1; }
+    .hdr-eyebrow {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.75;
+      margin-bottom: 10px;
+    }
+    .hdr h1 {
+      font-size: clamp(22px, 5.5vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+    .hdr h1 em { font-style: normal; color: var(--gold); }
+    .hdr-sub {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    /* ── SEARCH ── */
+    .search-section {
+      max-width: 640px;
+      margin: 32px auto 0;
+      padding: 0 16px;
+    }
+    .search-row {
+      display: flex;
+      gap: 8px;
+    }
+    .search-input {
+      flex: 1;
+      padding: 13px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.16s;
+    }
+    .search-input:focus { border-color: var(--gold); }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-btn {
+      padding: 13px 22px;
+      border-radius: var(--r);
+      border: 1px solid var(--gold);
+      background: var(--gold-dim);
+      color: var(--gold);
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.16s;
+      white-space: nowrap;
+    }
+    .search-btn:hover { background: rgba(201,168,76,0.22); }
+    .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── CONTENT AREA ── */
+    .content-area {
+      max-width: 640px;
+      margin: 20px auto 64px;
+      padding: 0 16px;
+    }
+
+    /* ── STATUS / SPINNER ── */
+    .status-msg {
+      text-align: center;
+      padding: 48px 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .status-icon { font-size: 34px; display: block; margin-bottom: 10px; }
+    .spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── RESULTS ── */
+    .result-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.16s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .result-item:hover {
+      border-color: rgba(201,168,76,0.3);
+      background: rgba(201,168,76,0.04);
+      transform: translateX(3px);
+    }
+    .result-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .result-meta { font-size: 12px; color: var(--text-sub); }
+    .result-meta span + span { margin-left: 12px; }
+    .result-arrow { color: var(--text-muted); font-size: 20px; flex-shrink: 0; }
+
+    /* ── DETAIL ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.16s;
+      margin-bottom: 14px;
+    }
+    .back-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+    .detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .detail-header {
+      padding: 22px 22px 18px;
+      background: linear-gradient(135deg, #0e0c26 0%, var(--bg-card) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.4px;
+      margin-bottom: 6px;
+    }
+    .detail-guild { font-size: 13px; color: var(--text-sub); margin-bottom: 2px; }
+    .detail-alliance { font-size: 12px; color: var(--text-muted); }
+
+    .detail-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: var(--border);
+      gap: 1px;
+    }
+    .stat-block {
+      background: var(--bg-card);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+    .kill  { color: var(--red); }
+    .death { color: var(--blue); }
+    .kd    { color: var(--gold); }
+
+    @media (max-width: 480px) {
+      .detail-stats { grid-template-columns: repeat(2, 1fr); }
+      .stat-block:last-child { grid-column: span 2; }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      letter-spacing: 0.3px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Albion<span>GG</span></a>
+    <button class="nav-hamburger" id="navBurger" onclick="toggleNav()" aria-label="메뉴 열기">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html"  class="nav-link">홈</a></li>
+      <li><a href="index.html"  class="nav-link">페임 계산기</a></li>
+      <li><a href="#"           class="nav-link" onclick="wip(event)">빌드 <span class="wip-badge">준비중</span></a></li>
+      <li><a href="guide.html"  class="nav-link">가이드</a></li>
+      <li><a href="player.html" class="nav-link active">전적 조회</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <span class="hdr-eyebrow">Albion Online</span>
+    <h1>플레이어 <em>전적 조회</em></h1>
+    <p class="hdr-sub">닉네임으로 플레이어를 검색하고 킬/데스 전적을 확인하세요</p>
+  </div>
+</header>
+
+<div class="search-section">
+  <div class="search-row">
+    <input type="text" id="searchInput" class="search-input" placeholder="닉네임 입력..." autocomplete="off" />
+    <button class="search-btn" id="searchBtn" onclick="doSearch()">검색</button>
+  </div>
+</div>
+
+<div class="content-area" id="contentArea">
+  <div class="status-msg">
+    <span class="status-icon">🔎</span>
+    닉네임을 입력하고 검색하세요
+  </div>
+</div>
+
+<footer>
+  알비온 온라인 한국어 정보 사이트 &nbsp;·&nbsp; 데이터는 게임 내 수치 기준 &nbsp;·&nbsp; Albion Online
+</footer>
+
+<script>
+let lastResults = [];
+
+async function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  if (!q) return;
+
+  setLoading(true);
+  showContent(`<div class="status-msg"><div class="spinner"></div>검색 중...</div>`);
+
+  try {
+    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+    if (!res.ok) throw new Error('search failed');
+    const data = await res.json();
+    lastResults = data.players || [];
+    renderResults(lastResults);
+  } catch {
+    showContent(`<div class="status-msg"><span class="status-icon">⚠️</span>검색 중 오류가 발생했습니다.</div>`);
+  } finally {
+    setLoading(false);
+  }
+}
+
+function renderResults(players) {
+  if (players.length === 0) {
+    showContent(`<div class="status-msg"><span class="status-icon">🔍</span>검색 결과가 없습니다.</div>`);
+    return;
+  }
+
+  const items = players.map(p => `
+    <div class="result-item" onclick="loadPlayer('${esc(p.Id)}')">
+      <div>
+        <div class="result-name">${esc(p.Name)}</div>
+        <div class="result-meta">
+          <span>길드: ${esc(p.GuildName) || '길드 없음'}</span>
+          <span>얼라: ${esc(p.AllianceName) || '-'}</span>
+        </div>
+      </div>
+      <span class="result-arrow">›</span>
+    </div>
+  `).join('');
+
+  showContent(items);
+}
+
+async function loadPlayer(id) {
+  showContent(`
+    <button class="back-btn" onclick="backToResults()">← 검색 결과로</button>
+    <div class="status-msg"><div class="spinner"></div>불러오는 중...</div>
+  `);
+
+  try {
+    const res = await fetch(`/api/player?id=${encodeURIComponent(id)}`);
+    if (!res.ok) throw new Error('player fetch failed');
+    const p = await res.json();
+    renderDetail(p);
+  } catch {
+    showContent(`
+      <button class="back-btn" onclick="backToResults()">← 검색 결과로</button>
+      <div class="status-msg"><span class="status-icon">⚠️</span>정보를 불러올 수 없습니다.</div>
+    `);
+  }
+}
+
+function renderDetail(p) {
+  const killFame  = fmt(p.KillFame);
+  const deathFame = fmt(p.DeathFame);
+  const kd        = p.FameRatio != null ? Number(p.FameRatio).toFixed(2) : '—';
+
+  showContent(`
+    <button class="back-btn" onclick="backToResults()">← 검색 결과로</button>
+    <div class="detail-card">
+      <div class="detail-header">
+        <div class="detail-name">${esc(p.Name)}</div>
+        <div class="detail-guild">길드: ${esc(p.GuildName) || '길드 없음'}</div>
+        <div class="detail-alliance">얼라이언스: ${esc(p.AllianceName) || '-'}</div>
+      </div>
+      <div class="detail-stats">
+        <div class="stat-block">
+          <div class="stat-value kill">${killFame}</div>
+          <div class="stat-label">킬 페임</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-value death">${deathFame}</div>
+          <div class="stat-label">데스 페임</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-value kd">${kd}</div>
+          <div class="stat-label">KD 비율</div>
+        </div>
+      </div>
+    </div>
+  `);
+}
+
+function backToResults() {
+  renderResults(lastResults);
+}
+
+function showContent(html) {
+  document.getElementById('contentArea').innerHTML = html;
+}
+
+function setLoading(on) {
+  document.getElementById('searchBtn').disabled = on;
+}
+
+function fmt(n) {
+  if (n == null) return '0';
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
+  if (n >= 1_000)     return (n / 1_000).toFixed(1) + 'K';
+  return Number(n).toLocaleString();
+}
+
+function esc(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toggleNav() {
+  document.getElementById('navBurger').classList.toggle('open');
+  document.getElementById('navMenu').classList.toggle('open');
+}
+
+function wip(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  alert('준비 중인 기능입니다.');
+}
+
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+
+document.addEventListener('click', e => {
+  const nav = document.querySelector('.navbar');
+  if (nav && !nav.contains(e.target)) {
+    document.getElementById('navBurger').classList.remove('open');
+    document.getElementById('navMenu').classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
