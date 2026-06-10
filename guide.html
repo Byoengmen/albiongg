@@ -278,9 +278,16 @@
     }
     .modal-section ul li {
       font-size: 13px; color: var(--text-sub); line-height: 1.7;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .modal-section ul li .li-icon {
+      width: 32px; height: 32px; flex-shrink: 0;
+      image-rendering: auto;
+    }
+    .modal-section ul li.dot-item {
       padding-left: 14px; position: relative;
     }
-    .modal-section ul li::before {
+    .modal-section ul li.dot-item::before {
       content: '·'; position: absolute; left: 0; color: var(--gold); font-weight: 900;
     }
     .modal-related { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -382,11 +389,11 @@ const CONTENTS = [
       { title: '제련이란', text: '채집한 원료를 그냥 사용할 수는 없습니다. 제련소에서 정제 원료로 가공해야 제작에 사용할 수 있습니다.\n티어가 높아질수록 필요한 하위 티어 정제 원료와 원자재 양이 늘어납니다.' },
       { title: '집중 포인트', text: '제련 시 집중 포인트를 사용하면 자원을 일부 돌려받을 수 있어 효율이 크게 오릅니다.\n대량 제련 전에는 집중 포인트 보유 여부를 반드시 확인하세요.' },
       { title: '도시별 생산 보너스', list: [
-        '판자 → Fort Sterling (제재소)',
-        '직물 → Lymhurst (방직공)',
-        '석괴 → Bridgewatch (석공)',
-        '피혁 → Martlock (무두장이)',
-        '금속 막대 → Thetford (제련소)',
+        { icon: 'T4_PLANKS',   text: '판자 → Fort Sterling (제재소)' },
+        { icon: 'T4_CLOTH',    text: '직물 → Lymhurst (방직공)' },
+        { icon: 'T4_ROCK',     text: '석괴 → Bridgewatch (석공)' },
+        { icon: 'T4_LEATHER',  text: '피혁 → Martlock (무두장이)' },
+        { icon: 'T4_METALBAR', text: '금속 막대 → Thetford (제련소)' },
       ], note: '같은 자원이라도 해당 도시에서 제련하면 더 많은 정제 원료를 얻을 수 있습니다.' },
       { title: '변형', text: '원료가 부족할 때는 하위 티어 자원을 상위 티어로 변형할 수 있습니다 (최소 T4).\n제작소의 두 번째 탭에서 이용 가능합니다.' },
       { title: '수익화', text: '일부 플레이어는 원료를 시장에서 저렴하게 구매해 제련 후 판매하는 방식으로 수익을 냅니다.\n정제 원료는 장비 제작 수요로 인해 항상 안정적인 시장이 형성되어 있습니다.' },
@@ -439,7 +446,10 @@ function openModal(name) {
     if (s.list) {
       return `<div class="modal-section">
         <div class="modal-section-title">${esc(s.title)}</div>
-        <ul>${s.list.map(li => `<li>${esc(li)}</li>`).join('')}</ul>
+        <ul>${s.list.map(li => typeof li === 'object'
+          ? `<li><img class="li-icon" src="https://render.albiononline.com/v1/item/${li.icon}.png" alt="${esc(li.text)}" width="32" height="32"><span>${esc(li.text)}</span></li>`
+          : `<li class="dot-item">${esc(li)}</li>`
+        ).join('')}</ul>
         ${s.note ? `<p style="margin-top:8px">${esc(s.note)}</p>` : ''}
       </div>`;
     }
