@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Albion Assembly — 용어 사전</title>
+  <meta name="description" content="알비온 온라인에서 자주 쓰이는 용어 모음. CC·갱킹·ZvZ·페임 등 주요 게임 용어를 한국어로 설명합니다.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b0b18;
+      --bg-card:   #111127;
+      --bg-input:  #181730;
+      --border:    #242240;
+      --gold:      #c9a84c;
+      --gold-dim:  rgba(201,168,76,0.12);
+      --gold-glow: rgba(201,168,76,0.30);
+      --text:      #e4ddd0;
+      --text-sub:  #7d758f;
+      --text-muted:#393558;
+      --r:         13px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, '맑은 고딕', sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* ── NAV ── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(11,11,24,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1060px; margin: 0 auto; padding: 0 16px;
+      height: 54px; display: flex; align-items: center;
+      justify-content: space-between; gap: 16px;
+    }
+    .nav-logo {
+      font-size: 18px; font-weight: 900; color: var(--gold);
+      text-decoration: none; letter-spacing: -0.5px; flex-shrink: 0;
+    }
+    .nav-logo span { color: var(--text); font-weight: 400; }
+    .nav-menu { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-link {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 7px;
+      font-size: 13px; font-weight: 600; color: var(--text-sub);
+      text-decoration: none; transition: all 0.16s; white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: var(--gold); background: var(--gold-dim); }
+    .wip-badge {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+      color: var(--text-muted); background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px;
+    }
+    .nav-hamburger {
+      display: none; flex-direction: column; justify-content: center;
+      gap: 5px; width: 36px; height: 36px; padding: 6px;
+      border: 1px solid var(--border); border-radius: 8px;
+      background: transparent; cursor: pointer; flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block; height: 2px; border-radius: 2px;
+      background: var(--text-sub); transition: all 0.22s ease; transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    @media (max-width: 640px) {
+      .nav-hamburger { display: flex; }
+      .nav-menu {
+        display: none; position: absolute; top: 54px; left: 0; right: 0;
+        flex-direction: column; align-items: stretch;
+        background: rgba(13,13,28,0.97); border-bottom: 1px solid var(--border);
+        padding: 8px 12px 12px; gap: 2px;
+      }
+      .nav-menu.open { display: flex; }
+      .nav-link { padding: 10px 14px; font-size: 14px; }
+    }
+
+    /* ── HEADER ── */
+    .hdr {
+      text-align: center; padding: 48px 16px 40px;
+      background: linear-gradient(180deg, #0d0b25 0%, var(--bg) 100%);
+      position: relative; overflow: hidden;
+    }
+    .hdr::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.09) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hdr::after {
+      content: ''; position: absolute; bottom: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent);
+    }
+    .hdr-inner { position: relative; z-index: 1; }
+    .hdr-eyebrow {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: 3.5px; text-transform: uppercase;
+      color: var(--gold); opacity: 0.7; margin-bottom: 12px;
+    }
+    .hdr h1 {
+      font-size: clamp(28px, 6vw, 44px); font-weight: 900;
+      letter-spacing: -1.5px; color: var(--text); line-height: 1.1;
+    }
+    .hdr h1 em { font-style: normal; color: var(--gold); }
+    .hdr-sub { margin-top: 8px; font-size: 13px; color: var(--text-sub); }
+
+    /* ── AD ── */
+    .ad-wrap {
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .ad-wrap.ad-bottom { border-top: 1px solid var(--border); border-bottom: none; }
+    .ad-box {
+      position: relative; width: 728px; height: 90px;
+      max-width: 100%; margin: 0 auto;
+      background: rgba(255,255,255,0.025);
+      border: 1px dashed rgba(255,255,255,0.07);
+      border-radius: 6px; overflow: hidden;
+    }
+    .ad-label {
+      position: absolute; inset: 0; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--text-muted);
+      pointer-events: none; user-select: none;
+    }
+    @media (max-width: 760px) { .ad-box { width: 100%; height: 50px; } }
+
+    /* ── CONTROLS ── */
+    .controls {
+      max-width: 1060px; margin: 0 auto;
+      padding: 24px 16px 0;
+    }
+    .search-row {
+      position: relative; margin-bottom: 16px;
+    }
+    .search-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 15px; pointer-events: none; opacity: 0.4;
+    }
+    .search-input {
+      width: 100%; padding: 12px 16px 12px 40px;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--r); color: var(--text);
+      font-size: 14px; font-family: inherit; outline: none;
+      transition: border-color 0.16s;
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: rgba(201,168,76,0.5); }
+
+    .tabs-bar {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      padding-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-sub);
+      font-size: 12px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); border-color: rgba(201,168,76,0.25); }
+    .tab-btn.active {
+      background: var(--gold-dim); color: var(--gold);
+      border-color: rgba(201,168,76,0.35);
+    }
+    .tab-count {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      color: var(--text-muted); margin-left: 4px;
+    }
+    .tab-btn.active .tab-count { color: rgba(201,168,76,0.6); }
+
+    /* ── CARDS ── */
+    .cards-wrap {
+      max-width: 1060px; margin: 0 auto;
+      padding: 0 16px 56px;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .term-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px 20px;
+      transition: border-color 0.16s, transform 0.16s, box-shadow 0.16s;
+    }
+    .term-card:hover {
+      border-color: rgba(201,168,76,0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+    }
+    .term-header {
+      display: flex; align-items: baseline; gap: 8px;
+      margin-bottom: 8px; flex-wrap: wrap;
+    }
+    .term-name {
+      font-size: 15px; font-weight: 800; color: var(--text);
+      letter-spacing: -0.3px;
+    }
+    .term-en {
+      font-size: 11px; font-weight: 600; color: var(--gold);
+      background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 5px; padding: 2px 7px; white-space: nowrap;
+    }
+    .term-cat {
+      font-size: 10px; font-weight: 700; color: var(--text-muted);
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 5px; padding: 2px 7px; white-space: nowrap;
+    }
+    .term-desc {
+      font-size: 13px; color: var(--text-sub); line-height: 1.7;
+    }
+
+    /* 검색 결과 없음 */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center; padding: 64px 16px;
+      color: var(--text-muted); font-size: 14px;
+    }
+    .empty-icon { font-size: 36px; display: block; margin-bottom: 12px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 20px 16px;
+      font-size: 11px; color: var(--text-muted);
+      border-top: 1px solid var(--border); letter-spacing: 0.3px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Albion<span>Assembly</span></a>
+    <button class="nav-hamburger" id="navBurger" onclick="toggleNav()" aria-label="메뉴 열기">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html"      class="nav-link">홈</a></li>
+      <li><a href="calculator.html" class="nav-link">페임 계산기</a></li>
+      <li><a href="#"               class="nav-link" onclick="wip(event)">빌드 <span class="wip-badge">준비중</span></a></li>
+      <li><a href="guide.html"      class="nav-link">가이드</a></li>
+      <li><a href="player.html"     class="nav-link">전적 조회</a></li>
+      <li><a href="glossary.html"   class="nav-link active">용어 사전</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <span class="hdr-eyebrow">Albion Online</span>
+    <h1>용어 <em>사전</em></h1>
+    <p class="hdr-sub">알비온 온라인에서 자주 쓰이는 용어 모음</p>
+  </div>
+</header>
+
+<!-- 광고 1: 헤더 아래 -->
+<div class="ad-wrap">
+  <div class="ad-box">
+    <span class="ad-label">광고 영역</span>
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-Y5aAmnxQ6kXtVtfh" data-ad-width="728" data-ad-height="90"></ins>
+    <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-row">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" class="search-input"
+           placeholder="용어명 또는 설명으로 검색..." autocomplete="off" />
+  </div>
+  <div class="tabs-bar" id="tabsBar"></div>
+</div>
+
+<div class="cards-wrap">
+  <div class="cards-grid" id="cardsGrid"></div>
+</div>
+
+<!-- 광고 2: 하단 -->
+<div class="ad-wrap ad-bottom">
+  <div class="ad-box">
+    <span class="ad-label">광고 영역</span>
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-Z1BMLgCyvYaDqzmG" data-ad-width="728" data-ad-height="90"></ins>
+  </div>
+</div>
+
+<footer>
+  알비온 온라인의 모든 정보 &nbsp;·&nbsp; 데이터는 게임 내 수치 기준 &nbsp;·&nbsp; Albion Online
+</footer>
+
+<script>
+const TERMS = [
+  // 전투·스킬
+  { name: 'CC', en: '군중 제어기', cat: '전투·스킬', desc: '기절·속박·침묵 등 상대의 행동을 제한하는 스킬의 총칭.' },
+  { name: '넉백', en: '', cat: '전투·스킬', desc: '상대를 밀쳐내는 스킬 효과.' },
+  { name: '쿨타임', en: '', cat: '전투·스킬', desc: '스킬 재사용 대기시간.' },
+  { name: '카이팅', en: '', cat: '전투·스킬', desc: '거리를 유지하며 도망치면서 공격하는 전술.' },
+  { name: '인게이지', en: '', cat: '전투·스킬', desc: '파티 단위로 공격의 포문을 여는 것. 콜러의 신호에 맞춰 동시에 스킬을 박아넣는 것이 중요하다.' },
+  { name: '디펜스', en: '', cat: '전투·스킬', desc: '아군을 보호하는 것. CC기나 특수 효과로 적의 공격을 방해하는 행위 포함.' },
+  { name: '클랩', en: '', cat: '전투·스킬', desc: '플레이어들이 좁은 공간에 뭉쳐있는 상태. 광역기에 취약하다.' },
+  { name: '브롤', en: '', cat: '전투·스킬', desc: '지속딜 위주로 꾸준히 데미지를 누적시켜 상대를 말라죽게 하는 전술.' },
+  { name: '다이브', en: '', cat: '전투·스킬', desc: '다른 콘텐츠를 진행 중인 적을 기습적으로 덮치는 것.' },
+  { name: '플랭킹', en: '', cat: '전투·스킬', desc: '적의 측면이나 후방을 노리거나 샌드위치 상황을 만드는 전술.' },
+  { name: '스프레드', en: '', cat: '전투·스킬', desc: '광역기 피해를 줄이기 위해 아군끼리 거리를 두고 흩어지는 것.' },
+  { name: '샬로우', en: '', cat: '전투·스킬', desc: '공격을 적의 전위 정도까지만 얕게 하라는 전술 지시.' },
+  { name: '쵸크', en: '', cat: '전투·스킬', desc: '좁은 지형. 적은 인원이 많은 인원을 방어할 때 활용하기도 한다.' },
+  { name: '휴지', en: '', cat: '전투·스킬', desc: '매우 큰 클랩. 다수가 밀집한 상태.' },
+
+  // PvP·길드
+  { name: '갱킹', en: '', cat: 'PvP·길드', desc: '오픈 월드에서 다른 플레이어를 기습하는 PvP.' },
+  { name: '갱커', en: '', cat: 'PvP·길드', desc: '갱킹을 하는 플레이어.' },
+  { name: 'ZvZ', en: '', cat: 'PvP·길드', desc: '길드 또는 연합 간 대규모 집단 전투.' },
+  { name: 'GvG', en: '', cat: 'PvP·길드', desc: '길드 간 소규모 전투. 주로 5v5 형식으로 진행.' },
+  { name: '콜', en: '', cat: 'PvP·길드', desc: '전투와 전술을 지휘하는 명령.' },
+  { name: '콜러', en: '', cat: 'PvP·길드', desc: '콜을 내리는 지휘자. 팀파이트에서 가장 중요한 역할.' },
+  { name: '밤스쿼드', en: '밤', cat: 'PvP·길드', desc: '본대와 따로 움직이는 별동대. 비싼 장비로 적의 취약점을 기습 공략.' },
+  { name: '블랍', en: '', cat: 'PvP·길드', desc: '11명 이상이 좁게 모일 때 미니맵에 표시되는 붉은 타원. 인원수에 비례해 커짐.' },
+  { name: '랫·랫질', en: '', cat: 'PvP·길드', desc: 'PvP를 회피하고 이득만 챙기는 비정석 플레이 또는 그런 플레이어.' },
+  { name: 'CTA', en: '동원령', cat: 'PvP·길드', desc: 'Call To Arms. 길드원 전체 강제 소집 명령.' },
+  { name: '맨데토리', en: '맨데', cat: 'PvP·길드', desc: '강제 참석 명령. 접속 중인 길드원을 필수 참여시키는 것.' },
+  { name: '리기어', en: '', cat: 'PvP·길드', desc: '사망으로 잃은 장비를 다시 구매하는 것. 길드 복지로 지원하는 경우도 있음.' },
+  { name: '인파미', en: '', cat: 'PvP·길드', desc: '오염된 던전의 불명예 포인트. 높을수록 더 강한 상대와 매칭됨.' },
+  { name: '풀로스', en: '', cat: 'PvP·길드', desc: '레드·블랙존에서 사망 시 모든 장비를 잃는 것.' },
+
+  // 던전·콘텐츠
+  { name: '오던', en: '', cat: '던전·콘텐츠', desc: '오염된 던전의 줄임말. 1v1 PvP 인스턴스 콘텐츠.' },
+  { name: '솔던', en: '', cat: '던전·콘텐츠', desc: '솔로 던전. 혼자 입장하는 인스턴스 던전.' },
+  { name: '그던', en: '', cat: '던전·콘텐츠', desc: '그룹 던전. 파티와 함께 공략하는 던전.' },
+  { name: '스던', en: '', cat: '던전·콘텐츠', desc: '스태틱 던전. 오픈 월드 고정 위치에 존재하는 대형 던전.' },
+  { name: '팩던', en: '', cat: '던전·콘텐츠', desc: '아발로니안 던전. 대규모 공격대가 패킹(모여)해서 가는 던전.' },
+  { name: 'HCE', en: '하드코어 원정대', cat: '던전·콘텐츠', desc: 'Hardcore Expedition. 최고 난이도 원정대. T8 최고급 장비 필수.' },
+  { name: '헬게', en: '', cat: '던전·콘텐츠', desc: '헬게이트. 2v2·5v5·10v10 팀 PvP 인스턴스 콘텐츠.' },
+  { name: '볼텍스', en: '', cat: '던전·콘텐츠', desc: '코어 볼텍스(에너지 소용돌이) 또는 거기서 나오는 크리스탈의 줄임말.' },
+  { name: '코어', en: '', cat: '던전·콘텐츠', desc: '은신처 파워코어의 줄임말.' },
+
+  // 시스템
+  { name: '페임', en: 'Fame', cat: '시스템', desc: '숙련도·경험치. 장비와 콘텐츠 진행의 핵심 수치.' },
+  { name: 'IP', en: '아이템 파워', cat: '시스템', desc: 'Item Power. 장비의 능력치를 판단하는 기준 수치.' },
+  { name: '티어', en: '', cat: '시스템', desc: '장비·자원의 등급. T4~T8로 구분하며 숫자가 높을수록 강함.' },
+  { name: '플랫', en: '', cat: '시스템', desc: '티어와 인첸트의 합산 등급. 예) 7플랫 = T4.3·T5.2·T6.1·T7.0.' },
+  { name: '인첸트', en: '인챈트', cat: '시스템', desc: '장비의 강화 수치. 0~4단계.' },
+  { name: '옵차', en: 'OC', cat: '시스템', desc: '오버차지. 장비 스킬을 강화 발동하는 것.' },
+  { name: '프리미엄', en: '', cat: '시스템', desc: '유료 구독. 페임 보너스·학습포인트 등 제공.' },
+  { name: '운명 보드', en: '', cat: '시스템', desc: '알비온의 스킬 트리. 장비 숙련도를 올려 스킬 해금.' },
+  { name: '집중 포인트', en: '', cat: '시스템', desc: '제작·제련 시 자원 수익률을 높이는 포인트.' },
+  { name: '학습 포인트', en: '', cat: '시스템', desc: '숙련도를 빠르게 올리는 데 사용하는 포인트.' },
+  { name: '소프트캡', en: '', cat: '시스템', desc: '일정 수치 이상부터 효율이 감소하는 상한선.' },
+  { name: '셋홈', en: '', cat: '시스템', desc: '해당 장소(주로 은신처)를 귀환 거점으로 설정하는 것.' },
+  { name: 'UTC', en: '', cat: '시스템', desc: '세계표준시. UTC+9가 한국 시간. 예) 12 UTC = 한국 오후 9시.' },
+
+  // 경제
+  { name: '실버', en: '', cat: '경제', desc: '게임 내 기본 화폐.' },
+  { name: '골드', en: '', cat: '경제', desc: '프리미엄 구매용 화폐. 실버로도 교환 가능.' },
+  { name: '경매장', en: '', cat: '경제', desc: '플레이어 간 아이템 거래소.' },
+  { name: '제련', en: '', cat: '경제', desc: '채집한 원자재를 가공 재료로 변환하는 작업.' },
+  { name: '암시장', en: '', cat: '경제', desc: '칼레온에 위치한 특수 거래소. 시스템이 직접 아이템을 매입.' },
+  { name: '노드', en: '', cat: '경제', desc: '자원 보물. 오픈 월드에 존재하는 고가치 자원 지점.' },
+  { name: '워체스트', en: '', cat: '경제', desc: '필드에 존재하는 저장고. 사용료를 내고 아이템 보관 가능.' },
+  { name: '리기어 비용', en: '', cat: '경제', desc: '사망으로 잃은 장비를 다시 구매하는 데 드는 비용.' },
+
+  // 지역·이동
+  { name: '블루존', en: '', cat: '지역·이동', desc: '완전 안전 구역. 사망해도 장비 손실 없음.' },
+  { name: '옐로존', en: '', cat: '지역·이동', desc: '부분 위험 구역. PvP 가능하나 장비 손실 없음.' },
+  { name: '레드존', en: '', cat: '지역·이동', desc: '위험 구역. 사망 시 장비 손실.' },
+  { name: '블랙존', en: '', cat: '지역·이동', desc: '완전 위험 구역. 사망 시 모든 장비 손실 (풀로스).' },
+  { name: '아웃랜드', en: '', cat: '지역·이동', desc: '레드·블랙존을 포함한 외곽 지역.' },
+  { name: '아발로드', en: '', cat: '지역·이동', desc: '아발론의 길. 도시 간 빠른 이동이 가능한 특수 통로.' },
+  { name: '로얄 대륙', en: '', cat: '지역·이동', desc: '게임 시작 대륙. 블루·옐로존 중심의 안전 지역.' },
+  { name: '존인·존아웃', en: '', cat: '지역·이동', desc: '해당 맵에 들어가거나 나오는 것.' },
+  { name: '하이드', en: 'HO', cat: '지역·이동', desc: '블랙존에 존재하는 은신처.' },
+  { name: 'HQ', en: '헤드쿼터', cat: '지역·이동', desc: '본부 은신처. 무적 상태.' },
+
+  // 장비
+  { name: '로얄', en: '', cat: '장비', desc: '왕실 계열 장비를 의미하는 영문 명칭.' },
+  { name: '쥬디', en: 'Judicate', cat: '장비', desc: '심판관 계열 장비의 영문 명칭.' },
+  { name: '헬리온', en: '', cat: '장비', desc: '무법자 계열 장비의 영문 명칭.' },
+  { name: '착취', en: '', cat: '장비', desc: '착취한 에너지. 장비 오버차지에 사용되는 자원.' },
+];
+
+const CATS = ['전체', '전투·스킬', 'PvP·길드', '던전·콘텐츠', '시스템', '경제', '지역·이동', '장비'];
+
+let activeCat = '전체';
+let searchQ   = '';
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function buildTabs() {
+  const bar = document.getElementById('tabsBar');
+  bar.innerHTML = CATS.map(c => {
+    const count = c === '전체' ? TERMS.length : TERMS.filter(t => t.cat === c).length;
+    return `<button class="tab-btn${c === activeCat ? ' active' : ''}" onclick="setTab('${c}')">${esc(c)} <span class="tab-count">${count}</span></button>`;
+  }).join('');
+}
+
+function render() {
+  const q = searchQ.toLowerCase();
+  const filtered = TERMS.filter(t => {
+    const matchCat  = activeCat === '전체' || t.cat === activeCat;
+    const matchText = !q || t.name.toLowerCase().includes(q) || (t.en && t.en.toLowerCase().includes(q)) || t.desc.toLowerCase().includes(q);
+    return matchCat && matchText;
+  });
+
+  const grid = document.getElementById('cardsGrid');
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><span class="empty-icon">🔍</span>검색 결과가 없습니다.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(t => `
+    <div class="term-card">
+      <div class="term-header">
+        <span class="term-name">${esc(t.name)}</span>
+        ${t.en ? `<span class="term-en">${esc(t.en)}</span>` : ''}
+        ${activeCat === '전체' ? `<span class="term-cat">${esc(t.cat)}</span>` : ''}
+      </div>
+      <p class="term-desc">${esc(t.desc)}</p>
+    </div>
+  `).join('');
+}
+
+function setTab(cat) {
+  activeCat = cat;
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim().startsWith(cat));
+  });
+  render();
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQ = e.target.value;
+  render();
+});
+
+function toggleNav() {
+  document.getElementById('navBurger').classList.toggle('open');
+  document.getElementById('navMenu').classList.toggle('open');
+}
+
+function wip(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  alert('준비 중인 기능입니다.');
+}
+
+document.addEventListener('click', e => {
+  const nav = document.querySelector('.navbar');
+  if (nav && !nav.contains(e.target)) {
+    document.getElementById('navBurger').classList.remove('open');
+    document.getElementById('navMenu').classList.remove('open');
+  }
+});
+
+buildTabs();
+render();
+</script>
+</body>
+</html>
