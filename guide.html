@@ -468,7 +468,7 @@ function openModal(name) {
     if (s.list) {
       return `<div class="modal-section">
         <div class="modal-section-title">${esc(s.title)}</div>
-        <ul>${s.list.map(li => typeof li === 'object'
+        <ul>${s.list.map(li =>
           li.icon  ? `<li><img class="li-icon" src="https://render.albiononline.com/v1/item/${li.icon}.png" alt="${esc(li.text)}" width="32" height="32"><span>${esc(li.text)}</span></li>`
           : li.color ? `<li><span class="zone-dot" style="background:${li.color};${li.border?'border:'+li.border:''}"></span><span>${esc(li.text)}</span></li>`
           : `<li class="dot-item">${esc(li)}</li>`
