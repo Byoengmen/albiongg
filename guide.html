@@ -395,7 +395,7 @@ const TAG_CLASS = {
 
 const CONTENTS = [
   {
-    name: '제련·제작', icon: '⚒️', tags: ['생활', '솔로'],
+    name: '제련', icon: '⚒️', tags: ['생활', '솔로'],
     modal: [
       { title: '소개', text: '채집한 원료를 정제 원료로 변환하고, 이를 장비나 소모품으로 만드는 활동입니다.\n알비온의 모든 장비는 플레이어가 직접 만듭니다.' },
       { title: '제련이란', text: '채집한 원료를 그냥 사용할 수는 없습니다. 제련소에서 정제 원료로 가공해야 제작에 사용할 수 있습니다.\n티어가 높아질수록 필요한 하위 티어 정제 원료와 원자재 양이 늘어납니다.' },
@@ -443,7 +443,7 @@ const CONTENTS = [
       ]},
       { title: '마스터리', text: 'T4 이후부터는 특정 무기나 아이템에 집중하면 해당 아이템의 마스터리 레벨이 오릅니다.\n마스터리 레벨이 오를수록 아이템 파워가 증가해, 같은 장비라도 마스터리가 높은 플레이어가 더 강합니다.\nT5 이상 장비 사용 시 마스터리 수정치 보너스가 추가됩니다.\nT5: +5% / T6: +10% / T7: +15% / T8: +20%' },
       { title: '엘리트 레벨', text: '특정 전투 마스터리에서 레벨 100 달성 시 해금됩니다.\n명성이 아닌 전투 명성 크레딧과 실버로만 올릴 수 있는 20개의 추가 레벨입니다.' },
-      { title: '관련 콘텐츠', related: ['페임 계산기', '채집', '제련·제작'] },
+      { title: '관련 콘텐츠', related: ['페임 계산기', '채집', '제련'] },
     ],
   },
   {
@@ -459,7 +459,7 @@ const CONTENTS = [
         '완료된 거래 탭: 즉시 체결된 구매 내역을 확인합니다.',
       ]},
       { title: '정렬 및 필터', text: '아이템 유형(가구, 소모품, 자원, 방어구, 무기 등)으로 분류할 수 있습니다.\n카테고리 선택 후 세부 항목(예: 자원 → 정제된 판자, 미정제 광석 등)으로 추가 필터링이 가능합니다.\n티어와 품질로도 검색 범위를 좁힐 수 있습니다.' },
-      { title: '관련 콘텐츠', related: ['무역·경매장', '제련·제작', '채집'] },
+      { title: '관련 콘텐츠', related: ['무역·경매장', '제련', '채집'] },
     ],
   },
   {
@@ -517,7 +517,7 @@ const CONTENTS = [
       { title: '포션 제작', text: '운명 보드에서 해당 티어의 연금술사 노드를 해금해야 합니다.\n주재료는 허브류이며, 일부 포션은 동물 유래 성분이나 추적으로 얻는 희귀 재료가 필요합니다.\n아케인 추출물로 인챈트해 효과를 강화할 수 있습니다.\n포션은 5개 묶음으로 제작되므로 대량 생산이 가능합니다.' },
       { title: '포션 사용 방법', text: '인벤토리 좌측 하단 슬롯에 장착 후 아이콘 클릭 또는 단축키로 사용합니다.\n한 캐릭터가 최대 10개까지 동시 장착 가능합니다.' },
       { title: '포션 종류', html: '· <img src="https://render.albiononline.com/v1/item/T4_POTION_HEAL.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">치유 포션: HP를 빠르게 회복합니다. 1v1·PvE에서 주로 사용합니다.<br>· <img src="https://render.albiononline.com/v1/item/T4_POTION_ENERGY.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">에너지 포션: 에너지를 즉시 회복하고 추가 재생 및 이동 속도 버프를 제공합니다.<br>· <img src="https://render.albiononline.com/v1/item/T5_POTION_REVIVE.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">거대화 포션: 강제 이동 효과 무효화, 최대 HP·적재량 증가. 대규모 전투 방어 옵션으로 활용합니다.<br>· <img src="https://render.albiononline.com/v1/item/T5_POTION_STONESKIN.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">저항 포션: 방어력과 CC 저항을 강화합니다. 소규모·대규모 전투 모두 유용합니다.<br>· <img src="https://render.albiononline.com/v1/item/T5_POTION_SLOWFIELD.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">끈끈이 포션: 투척형. 5초간 적 이동 속도 감소·대미지 감소·투명 적 감지. 공격·방어 겸용입니다.<br>· <img src="https://render.albiononline.com/v1/item/T4_POTION_COOLDOWN.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">독 포션: 투척형. 4초간 고정 대미지. 갱킹·소규모 PvP·PvE에서 사용합니다.<br>· <img src="https://render.albiononline.com/v1/item/T8_POTION_CLEANSE.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">투명 포션: 짧은 시간 투명 상태. T8 전용. 매복·전투 탈출 시 활용합니다.<br>· <img src="https://render.albiononline.com/v1/item/T5_POTION_MOB_RESET@2.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">진정 포션: 군중 속에서 일시적으로 은신. 고티어는 투척 가능해 PvE 풀 리셋에 유용합니다.<br>· <img src="https://render.albiononline.com/v1/item/T5_POTION_CLEANSE2.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">정화 포션: 기절·속박·침묵·디버프 등 모든 CC 효과 제거. T5·T7은 추가로 CC 면역 제공합니다.<br>· <img src="https://render.albiononline.com/v1/item/T5_POTION_ACID@3.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">산성 포션: 투척형. 5초간 적 저항력 감소. 대미지 딜링 극대화에 활용합니다.<br>· <img src="https://render.albiononline.com/v1/item/T4_POTION_BERSERK.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">광폭화 포션: 대미지 증가·방어력 감소 버프. 공격적인 PvP 상황에 적합합니다.<br>· <img src="https://render.albiononline.com/v1/item/T4_POTION_LAVA.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">지옥불 포션: 투척형. 불꽃으로 0.5초 간격 최대 3초간 범위 대미지. PvP·PvE 추가 딜에 활용합니다.<br>· <img src="https://render.albiononline.com/v1/item/T4_POTION_GATHER.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">채집 포션: 채집·낚시 속도 증가. 고가치 자원 수집 시 효율을 높입니다.<br>· <img src="https://render.albiononline.com/v1/item/T4_POTION_TORNADO@2.png" width="24" height="24" style="vertical-align:middle; margin: 0 4px;" onerror="this.style.display=\'none\'">병 속의 폭풍: 투척형. 특정 위치에 토네이도 생성, 적 플레이어를 날려버립니다. 근접 공격 방어에 유용합니다.' },
-      { title: '관련 콘텐츠', related: ['제련·제작', '채집', '추적'] },
+      { title: '관련 콘텐츠', related: ['제련', '채집', '추적'] },
     ],
   },
   {
@@ -697,7 +697,51 @@ const CONTENTS = [
       { title: '획득 방법', text: '프리미엄 상태인 캐릭터는 하루 10,000 집중 포인트를 자동 획득하며, 최대 30,000까지 누적됩니다.\n한도에 도달하면 적립이 멈추므로 미리 소모하는 것이 좋습니다.\n집중 회복 포션(500~20,000)을 통해서도 획득 가능하며, 알비온 일지 미션이나 모험가 챌린지 상자에서 보상으로 얻을 수 있습니다.\n인벤토리 상단의 화살표 → 스탯 탭에서 현재 보유량을 확인할 수 있습니다.' },
       { title: '활용 방법', html: '<div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#7d758f;line-height:1.85"><div><span style="font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,168,76,0.8)">1. 농사 (작물·허브)</span><br>작물 클릭 → 물 주기에 집중 포인트 사용 시 수확 후 씨앗 회수 확률이 크게 증가합니다.<br>작물당 1회만 가능하므로, 고가·희귀 작물에 우선 사용하는 것이 효율적입니다.<br>농사 전문화가 높아질수록 필요한 집중 포인트는 감소합니다.</div><div><span style="font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,168,76,0.8)">2. 농사 (동물)</span><br>동물 클릭 → 사육에 집중 포인트 사용 시 새끼 출산 확률이 크게 증가합니다.<br>동물당 하루 1회 가능하며, 성장 기간 동안 매일 사용할 수 있습니다.<br>동물 사육 전문화가 높아질수록 필요한 집중 포인트는 감소합니다.</div><div><span style="font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,168,76,0.8)">3. 제작 및 제련</span><br>기본 자원 반환 비율(RRR)은 15.2%이지만, 집중 포인트 사용 시 최대 3배까지 증가합니다.<br>더 많은 자원을 회수하고, 더 높은 품질의 아이템 제작 확률도 상승합니다.<br>고가 아이템·고티어 자원일수록 효과가 큽니다.</div><div><span style="font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,168,76,0.8)">4. 연구</span><br>아이템을 파괴하고 제작 명성을 획득하는 활동입니다.<br>· 기본: 제작 명성의 275%<br>· 프리미엄: 최대 413%<br>· 집중 포인트 사용: 최대 656%<br>연구는 제작 마스터리를 빠르게 올리는 가장 효율적인 방법입니다.</div><div><span style="font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,168,76,0.8)">5. 무기 깨우기</span><br>순수한(.4 인챈트) 무기를 아티팩트 제작소에서 각성·조정할 때, 집중 포인트 사용 시 필요한 조정 포인트 양이 감소합니다.</div></div>' },
       { title: '활용 팁', text: '집중 포인트는 프리미엄의 핵심 혜택이므로 한도(30,000)에 도달해 낭비되지 않도록 꾸준히 소모하는 것이 중요합니다.\n제작·제련·농사·무기 깨우기 등 어디에 사용할지 우선순위를 정해두면 수익 효율을 크게 높일 수 있습니다.' },
-      { title: '관련 콘텐츠', related: ['운명 보드', '제련·제작', '농사', '깨어난 무기'] },
+      { title: '관련 콘텐츠', related: ['운명 보드', '제련', '제작', '농사', '깨어난 무기'] },
+    ],
+  },
+  {
+    name: '제작', icon: '🔨', tags: ['생활', '솔로', '초보추천'],
+    modal: [
+      { title: '소개', text: '알비온의 모든 아이템은 플레이어가 직접 제작합니다. 제작은 게임 경제의 핵심이며, 큰 수익을 낼 수 있는 활동입니다.' },
+      { title: '운명 보드 확인', text: 'B키 또는 운명 보드 아이콘으로 진행 상황을 확인할 수 있습니다.\n보드 왼쪽은 전투 트리, 오른쪽은 제작 트리입니다.\n제작할 아이템을 클릭하면 필요한 재료를 확인할 수 있습니다.' },
+      { title: '제작 가능 품목', text: '무기(검·활·대거·스태프 등), 갑옷(플레이트·피혁·직물), 도구(채집 도구), 장신구(가방·망토·공성 장비), 가구' },
+      { title: '제작소 종류', list: [
+        '워리어의 대장간: 플레이트 갑옷, 검·도끼·메이스·해머·장갑·크로스보우·방패',
+        '헌터의 산장: 피혁 갑옷, 활·대거·창·쿼터스태프·셰이프시프터/네이쳐 스태프·횃불',
+        '메이지의 탑: 직물 갑옷, 파이어/홀리/아케인/프로스트/커스드 스태프·서적',
+        '도구 제작자: 가방·망토·채집 도구·공성 장비·가구',
+      ], note: '왕국 도시, 시작 마을, 섬, 은신처, 아웃랜드 쉼터에 위치합니다.' },
+      { title: '제작 시작 단계', list: [
+        '운명 보드의 수련생 제작자 노드 해금 → T2 자원 제련(돌·목재·광석·섬유·가죽 → 벽돌·판자·금속·천·피혁)',
+        'T3 초심자 장비 제작으로 480 명성 획득 → 전사/헌터/마법사 전문화 중 선택',
+        '선택한 전문화의 장인(T3) 아이템 제작으로 명성 누적 → T4 잠금 해제',
+      ]},
+      { title: '제작 레벨과 티어', text: '레벨 1: T4 해금 / 레벨 10: T5 / 레벨 30: T6 / 레벨 70: T7 / 레벨 100: T8(최고 티어)' },
+      { title: '전문화', text: '특정 아이템(예: 바돈의 활)을 제작하면 카테고리 전체(활)와 해당 아이템 전문화가 함께 상승합니다.\n전문화 레벨업 보너스: 집중 비용 효율(일반/전문화), 품질 보너스(일반/전문화)' },
+      { title: '자원 반환 비율 (RRR)', text: '왕국 도시 기본 제작 보너스 18% 적용 시 RRR 15.2%.\n지역 생산 보너스가 있는 아이템 제작 시 RRR 24.8%로 상승.\n예: Martlock에서 병사 부츠 100쌍 제작 시(보너스 적용) 198.4개 환원, 보너스 없는 도시는 약 121개 환원.' },
+      { title: '제작 장소별 특징', list: [
+        '아웃랜드 쉼터: PvP 위험 지역, 자체 생산 보너스',
+        '개인/길드 섬: 해당 생물 군계 왕국 도시와 동일한 생산 보너스 (단, 18% 기본 보너스 없음)',
+        '은신처: 위치한 지역에 따라 생산 보너스 상이',
+      ]},
+      { title: '일일 생산 보너스', text: '매일 무작위 카테고리에 10% 또는 20% 보너스 적용. 활동 UI에서 확인 가능합니다.' },
+      { title: '집중 포인트', text: '프리미엄 플레이어는 하루 최대 10,000 획득(최대 30,000 보유). 제작 시 사용하면 RRR이 크게 증가합니다.' },
+      { title: '아이템 학습 (연구)', text: '제작소에서 아이템을 파괴하고 해당 제작 명성의 275%를 획득합니다. 비용은 크지만 빠른 레벨업 수단입니다.\n아이템 종류에 맞는 제작소에서만 학습 가능합니다 (예: 브로드소드는 워리어의 대장간).' },
+      { title: '인챈트', text: '.1(대단한): IP +100 / .2(희귀한): +200 / .3(우수한): +300 / .4(순수한): +400\n인챈트 자원으로 직접 제작하거나, 아티팩트 제작소에서 룬·영혼·유물을 사용해 기존 아이템을 인챈트할 수 있습니다.' },
+      { title: '일지', text: '제작 중 일지를 보유하면 제작 명성이 일지에도 누적됩니다(원래 명성 감소 없음).\n완성된 일지를 작업자에게 맡기면 약 22시간 후 제작 재료로 보상받습니다.\n· 대장장이 일지(워리어의 대장간) / 화살 제작자의 일지(헌터의 산장) / 주입자 일지(메이지의 탑) / 땜장이 일지(도구 제작자)' },
+      { title: '아티팩트', text: '룬·영혼·유물·왕실 인장·아발로니안 아티팩트·요정 아티팩트·크리스탈 아티팩트가 있습니다.\n요정·크리스탈 아티팩트 제외 대부분은 아티팩트 제작소에서 제작 가능합니다.\n요정 아티팩트는 미스트에서만, 크리스탈 아티팩트는 정복자의 상자에서 획득합니다.' },
+      { title: '대체 제작 레시피', text: '일부 아이템은 원래 아티팩트 대신 크리스탈화된 아이템으로 제작 가능합니다.\n· 룬 → 크리스탈화된 영혼 / 영혼 → 크리스탈화된 공포 / 유물 → 크리스탈화된 마법 / 아발로니안 아티팩트 → 크리스탈화된 신성\n원본 아티팩트가 비싸거나 구하기 어려울 때 실버를 절약할 수 있습니다.' },
+      { title: '수익성 극대화 팁', list: [
+        '원재료는 최저가 또는 구매 주문 활용',
+        '제작소 수수료가 낮은 곳 이용, 준회원 자격으로 할인 가능',
+        '일일 생산 보너스·집중 포인트로 RRR 극대화',
+        '프리미엄으로 명성·집중 포인트 효율 상승',
+        '일지 활용으로 추가 자원 확보',
+        '대체 레시피로 아티팩트 비용 절감',
+      ]},
+      { title: '초보자 팁', text: '낮은 티어부터 시작 → 제작 전 수익 계산 → 지역 생산 보너스 활용 → 고티어는 천천히 → 다양한 전문화 탐색' },
+      { title: '관련 콘텐츠', related: ['제련', '운명 보드', '집중 포인트', '마켓플레이스'] },
     ],
   },
 ];
