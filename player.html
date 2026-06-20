@@ -508,6 +508,104 @@
       color: var(--text);
     }
 
+    /* ── HISTORY ── */
+    .history-group {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 0 22px 12px;
+      overflow: hidden;
+    }
+    .history-group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg-input);
+      cursor: pointer;
+      user-select: none;
+      gap: 10px;
+    }
+    .history-group-header:hover { background: rgba(255,255,255,0.05); }
+    .history-group-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+    .history-count {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .history-date-range {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .history-toggle { color: var(--text-muted); font-size: 14px; transition: transform 0.2s; }
+    .history-toggle.open { transform: rotate(180deg); }
+    .history-equip-mini {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      padding: 10px 14px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .history-equip-mini img {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      object-fit: contain;
+    }
+    .history-equip-mini .empty-slot {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      border: 1px dashed var(--border);
+      background: var(--bg-input);
+      opacity: 0.3;
+    }
+    .history-events {
+      display: none;
+      flex-direction: column;
+      border-top: 1px solid var(--border);
+    }
+    .history-events.open { display: flex; }
+    .history-event-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      gap: 10px;
+      font-size: 12px;
+    }
+    .history-event-row:last-child { border-bottom: none; }
+    .event-type-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .badge-kill  { background: rgba(248,113,113,0.15); color: var(--red); }
+    .badge-death { background: rgba(96,165,250,0.15);  color: var(--blue); }
+    .event-opponent { color: var(--text-sub); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .event-fame  { color: var(--gold); font-weight: 700; white-space: nowrap; }
+    .event-time  { color: var(--text-muted); white-space: nowrap; }
+
     /* ── IP badge ── */
     .ip-badge {
       display: inline-flex;
@@ -836,12 +934,103 @@ function renderDetail(p) {
         }).join('')}
       </div>` : ''}
 
+      <div class="section-title" style="border-top:1px solid var(--border)">장비 히스토리</div>
+      <div id="historyArea" style="padding-bottom:8px"></div>
+
     </div>
   `);
+
+  // 상세 카드 렌더링 후 히스토리 비동기 로드
+  loadHistory(p.Id, currentServer);
 }
 
 function backToResults() {
   renderResults(lastResults);
+}
+
+/* ── 장비 히스토리 ── */
+const EQUIP_SLOT_KEYS = ['MainHand','OffHand','Head','Armor','Shoes','Bag','Cape','Mount','Potion','Food'];
+
+function renderMiniEquip(equipment) {
+  return EQUIP_SLOT_KEYS.map(key => {
+    const item = equipment?.[key];
+    if (item?.Type) {
+      return `<img src="https://render.albiononline.com/v1/item/${item.Type}.png" loading="lazy" title="${key}" onerror="this.style.opacity='0.2'">`;
+    }
+    return `<div class="empty-slot"></div>`;
+  }).join('');
+}
+
+function formatRelTime(isoStr) {
+  const diff = Date.now() - new Date(isoStr).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 60)   return `${m}분 전`;
+  const h = Math.floor(m / 60);
+  if (h < 24)   return `${h}시간 전`;
+  const d = Math.floor(h / 24);
+  if (d < 30)   return `${d}일 전`;
+  const mo = Math.floor(d / 30);
+  return `${mo}개월 전`;
+}
+
+function toggleHistory(idx) {
+  const evEl  = document.getElementById(`hev-${idx}`);
+  const togEl = document.getElementById(`htog-${idx}`);
+  if (!evEl) return;
+  evEl.classList.toggle('open');
+  togEl.classList.toggle('open');
+}
+
+function renderHistoryGroups(groups) {
+  if (!groups || groups.length === 0) return '';
+  return groups.map((g, idx) => {
+    const firstTime = formatRelTime(g.events[0].time);
+    const lastTime  = g.events.length > 1 ? formatRelTime(g.events[g.events.length - 1].time) : null;
+    const dateLabel = lastTime ? `${lastTime} ~ ${firstTime}` : firstTime;
+    const kills  = g.events.filter(e => e.type === 'kill').length;
+    const deaths = g.events.filter(e => e.type === 'death').length;
+    const countLabel = [
+      kills  > 0 ? `<span style="color:var(--red)">킬 ${kills}</span>`  : '',
+      deaths > 0 ? `<span style="color:var(--blue)">데스 ${deaths}</span>` : '',
+    ].filter(Boolean).join(' / ');
+
+    const eventRows = g.events.map(ev => `
+      <div class="history-event-row">
+        <span class="event-type-badge ${ev.type === 'kill' ? 'badge-kill' : 'badge-death'}">
+          ${ev.type === 'kill' ? 'KILL' : 'DEATH'}
+        </span>
+        <span class="event-opponent">${ev.opponent ? esc(ev.opponent) : '—'}</span>
+        <span class="event-fame">${fmt(ev.killFame)}</span>
+        <span class="event-time">${formatRelTime(ev.time)}</span>
+      </div>`).join('');
+
+    return `
+      <div class="history-group">
+        <div class="history-group-header" onclick="toggleHistory(${idx})">
+          <div class="history-group-meta">
+            <span class="history-count">${g.events.length}전 ${countLabel}</span>
+            <span class="history-date-range">${dateLabel}</span>
+          </div>
+          <span class="history-toggle" id="htog-${idx}">▾</span>
+        </div>
+        <div class="history-equip-mini">${renderMiniEquip(g.equipment)}</div>
+        <div class="history-events" id="hev-${idx}">${eventRows}</div>
+      </div>`;
+  }).join('');
+}
+
+async function loadHistory(playerId, server) {
+  const container = document.getElementById('historyArea');
+  if (!container) return;
+  container.innerHTML = `<div style="padding:10px 22px;font-size:12px;color:var(--text-muted)">히스토리 불러오는 중...</div>`;
+  try {
+    const res  = await fetch(`/api/events?id=${encodeURIComponent(playerId)}&server=${server}&limit=30`);
+    const data = await res.json();
+    const html = renderHistoryGroups(data.groups);
+    container.innerHTML = html || `<div style="padding:10px 22px;font-size:12px;color:var(--text-muted)">PvP 기록이 없습니다.</div>`;
+  } catch {
+    container.innerHTML = `<div style="padding:10px 22px;font-size:12px;color:var(--text-muted)">히스토리를 불러올 수 없습니다.</div>`;
+  }
 }
 
 function showContent(html) {
