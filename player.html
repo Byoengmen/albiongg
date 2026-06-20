@@ -375,6 +375,154 @@
       .stat-block:last-child { grid-column: span 2; }
     }
 
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 16px 22px 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── EQUIPMENT ── */
+    .equip-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      padding: 0 22px 18px;
+    }
+    @media (max-width: 480px) {
+      .equip-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 0 14px 14px; }
+    }
+    .equip-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .equip-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .equip-icon-wrap img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
+    .equip-icon-wrap.empty { opacity: 0.3; }
+    .equip-empty-icon { font-size: 22px; opacity: 0.4; }
+    .equip-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .equip-quality {
+      position: absolute;
+      bottom: 2px;
+      right: 3px;
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .equip-enchant {
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+    }
+
+    /* ── FAME ROWS ── */
+    .fame-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 0 22px 18px;
+    }
+    .fame-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      gap: 12px;
+    }
+    .fame-row:last-child { border-bottom: none; }
+    .fame-row-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+    .fame-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+    .fame-name { font-size: 13px; color: var(--text-sub); font-weight: 500; }
+    .fame-value { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; }
+
+    /* ── GATHER GRID ── */
+    .gather-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 0 22px 18px;
+    }
+    @media (max-width: 480px) {
+      .gather-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .gather-block {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .gather-icon-name {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-sub);
+      letter-spacing: 0.3px;
+    }
+    .gather-val {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    /* ── IP badge ── */
+    .ip-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.25);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+      margin: 0 22px 16px;
+    }
+
     /* ── FOOTER ── */
     .ad-wrap {
       padding: 12px 14px;
@@ -546,19 +694,100 @@ async function loadPlayer(id) {
   }
 }
 
+/* ── 장비 슬롯 정의 ── */
+const EQUIP_SLOTS = [
+  { key: 'MainHand',  label: '주무기',  icon: '⚔️' },
+  { key: 'OffHand',   label: '보조',    icon: '🛡️' },
+  { key: 'Head',      label: '투구',    icon: '🪖' },
+  { key: 'Armor',     label: '갑옷',    icon: '🥋' },
+  { key: 'Shoes',     label: '신발',    icon: '👟' },
+  { key: 'Bag',       label: '가방',    icon: '🎒' },
+  { key: 'Cape',      label: '망토',    icon: '🧣' },
+  { key: 'Mount',     label: '마운트',  icon: '🐴' },
+  { key: 'Potion',    label: '포션',    icon: '🧪' },
+  { key: 'Food',      label: '음식',    icon: '🍖' },
+];
+
+const QUALITY_NAMES = ['', '일반', '좋음', '뛰어남', '탁월함', '걸작'];
+
+function itemRenderUrl(type, quality) {
+  if (!type) return null;
+  const q = quality ?? 1;
+  return `https://render.albiononline.com/v1/item/${encodeURIComponent(type)}.png?quality=${q}&size=60`;
+}
+
+function enchantLevel(type) {
+  if (!type) return 0;
+  const m = type.match(/@(\d)$/);
+  return m ? parseInt(m[1]) : 0;
+}
+
+function renderEquipSlots(equipment) {
+  if (!equipment) return '';
+  return EQUIP_SLOTS.map(slot => {
+    const item = equipment[slot.key];
+    const hasItem = item && item.Type;
+    const url = hasItem ? itemRenderUrl(item.Type, item.Quality) : null;
+    const enchant = hasItem ? enchantLevel(item.Type) : 0;
+    const qualityLabel = hasItem && item.Quality > 1 ? QUALITY_NAMES[item.Quality] || '' : '';
+    return `
+      <div class="equip-slot">
+        <div class="equip-icon-wrap${hasItem ? '' : ' empty'}">
+          ${hasItem
+            ? `${enchant > 0 ? `<span class="equip-enchant">.${enchant}</span>` : ''}
+               <img src="${url}" alt="${slot.label}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+               <span class="equip-empty-icon" style="display:none">${slot.icon}</span>
+               ${qualityLabel ? `<span class="equip-quality">${qualityLabel[0]}</span>` : ''}`
+            : `<span class="equip-empty-icon">${slot.icon}</span>`}
+        </div>
+        <span class="equip-label">${slot.label}</span>
+      </div>`;
+  }).join('');
+}
+
 function renderDetail(p) {
   const killFame  = fmt(p.KillFame);
   const deathFame = fmt(p.DeathFame);
   const kd        = p.FameRatio != null ? Number(p.FameRatio).toFixed(2) : '—';
+  const ls        = p.LifetimeStatistics || {};
+  const gather    = ls.Gathering || {};
+  const ip        = p.AverageItemPower ? Math.round(p.AverageItemPower) : null;
+
+  const fameRows = [
+    { icon: '⚔️', name: 'PvP 킬 페임',   val: fmt(p.KillFame),            color: 'var(--red)' },
+    { icon: '💀', name: 'PvP 데스 페임',  val: fmt(p.DeathFame),           color: 'var(--blue)' },
+    { icon: '🐉', name: 'PvE 페임',        val: fmt(ls.PvE?.Total ?? ls.PvEFame), color: 'var(--green)' },
+    { icon: '⚒️', name: '제작 페임',       val: fmt(ls.Crafting?.Total ?? ls.CraftingFame), color: '#a78bfa' },
+    { icon: '🎣', name: '낚시 페임',       val: fmt(ls.FishingFame ?? ls.Fishing?.Total), color: '#38bdf8' },
+    { icon: '🌾', name: '농장 페임',       val: fmt(ls.FarmingFame ?? ls.Farming?.Total), color: '#86efac' },
+  ].filter(r => r.val !== '0' && r.val !== '—');
+
+  const gatherResources = [
+    { icon: '🪵', name: '목재',   key: 'Wood' },
+    { icon: '⛏️', name: '광석',   key: 'Ore' },
+    { icon: '🧶', name: '섬유',   key: 'Fiber' },
+    { icon: '🪨', name: '석재',   key: 'Rock' },
+    { icon: '🐾', name: '가죽',   key: 'Hide' },
+    { icon: '✨', name: '마력결정', key: 'Essence' },
+  ];
+
+  const hasGather = gatherResources.some(r => {
+    const v = gather[r.key]?.Total ?? 0;
+    return v > 0;
+  });
 
   showContent(`
     <button class="back-btn" onclick="backToResults()">← 검색 결과로</button>
     <div class="detail-card">
+
       <div class="detail-header">
         <div class="detail-name">${esc(p.Name)}</div>
         <div class="detail-guild">길드: ${esc(p.GuildName) || '길드 없음'}</div>
         <div class="detail-alliance">얼라이언스: ${esc(p.AllianceName) || '-'}</div>
       </div>
+
+      ${ip != null ? `<div style="padding:14px 22px 0"><span class="ip-badge">⚡ 평균 아이템 파워 ${ip.toLocaleString()}</span></div>` : ''}
+
       <div class="detail-stats">
         <div class="stat-block">
           <div class="stat-value kill">${killFame}</div>
@@ -573,6 +802,40 @@ function renderDetail(p) {
           <div class="stat-label">KD 비율</div>
         </div>
       </div>
+
+      ${p.Equipment ? `
+      <div class="section-title">최근 장비</div>
+      <div class="equip-grid">
+        ${renderEquipSlots(p.Equipment)}
+      </div>` : ''}
+
+      ${fameRows.length > 0 ? `
+      <div class="section-title">페임 전적</div>
+      <div class="fame-rows">
+        ${fameRows.map(r => `
+          <div class="fame-row">
+            <div class="fame-row-left">
+              <span class="fame-icon">${r.icon}</span>
+              <span class="fame-name">${r.name}</span>
+            </div>
+            <span class="fame-value" style="color:${r.color}">${r.val}</span>
+          </div>`).join('')}
+      </div>` : ''}
+
+      ${hasGather ? `
+      <div class="section-title">채집 페임</div>
+      <div class="gather-grid">
+        ${gatherResources.map(r => {
+          const total = gather[r.key]?.Total ?? 0;
+          if (total === 0) return '';
+          return `
+            <div class="gather-block">
+              <div class="gather-icon-name"><span>${r.icon}</span>${r.name}</div>
+              <div class="gather-val">${fmt(total)}</div>
+            </div>`;
+        }).join('')}
+      </div>` : ''}
+
     </div>
   `);
 }
