@@ -712,8 +712,8 @@ const QUALITY_NAMES = ['', '일반', '좋음', '뛰어남', '탁월함', '걸작
 
 function itemRenderUrl(type, quality) {
   if (!type) return null;
-  const q = quality ?? 1;
-  return `https://render.albiononline.com/v1/item/${encodeURIComponent(type)}.png?quality=${q}&size=60`;
+  // @ 문자는 인코딩하지 않음 (인첸트 레벨 T8_SWORD@2 형식 유지)
+  return `https://render.albiononline.com/v1/item/${type}.png`;
 }
 
 function enchantLevel(type) {
