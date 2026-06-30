@@ -191,41 +191,37 @@
     }
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
     }
     .term-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--r);
-      padding: 18px 20px;
+      padding: 16px 18px;
+      cursor: pointer;
       transition: border-color 0.16s, transform 0.16s, box-shadow 0.16s;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
     .term-card:hover {
-      border-color: rgba(201,168,76,0.25);
+      border-color: rgba(201,168,76,0.4);
       transform: translateY(-2px);
       box-shadow: 0 8px 28px rgba(0,0,0,0.4);
-    }
-    .term-header {
-      display: flex; align-items: baseline; gap: 8px;
-      margin-bottom: 8px; flex-wrap: wrap;
+      background: rgba(201,168,76,0.04);
     }
     .term-name {
       font-size: 15px; font-weight: 800; color: var(--text);
       letter-spacing: -0.3px;
     }
     .term-en {
-      font-size: 11px; font-weight: 600; color: var(--gold);
-      background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2);
-      border-radius: 5px; padding: 2px 7px; white-space: nowrap;
+      font-size: 10px; font-weight: 600; color: var(--gold);
+      opacity: 0.8;
     }
     .term-cat {
-      font-size: 10px; font-weight: 700; color: var(--text-muted);
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-      border-radius: 5px; padding: 2px 7px; white-space: nowrap;
-    }
-    .term-desc {
-      font-size: 13px; color: var(--text-sub); line-height: 1.7;
+      font-size: 9px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
     }
 
     /* 검색 결과 없음 */
@@ -235,6 +231,57 @@
       color: var(--text-muted); font-size: 14px;
     }
     .empty-icon { font-size: 36px; display: block; margin-bottom: 12px; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 18px;
+      padding: 28px 28px 24px;
+      max-width: 480px; width: 100%;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+      position: relative;
+      animation: modalIn 0.18s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(8px); }
+      to   { opacity: 1; transform: scale(1)    translateY(0); }
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .modal-close:hover { color: var(--text); border-color: var(--gold); background: var(--gold-dim); }
+    .modal-cat {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold); opacity: 0.7;
+      margin-bottom: 8px;
+    }
+    .modal-name {
+      font-size: 26px; font-weight: 900; letter-spacing: -0.5px;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .modal-en {
+      font-size: 13px; color: var(--gold); margin-bottom: 18px; opacity: 0.8;
+    }
+    .modal-desc {
+      font-size: 14px; color: var(--text-sub); line-height: 1.8;
+      border-top: 1px solid var(--border); padding-top: 16px;
+    }
 
     /* ── FOOTER ── */
     footer {
@@ -301,12 +348,27 @@
   </div>
 </div>
 
+<!-- 모달 -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-cat" id="modalCat"></div>
+    <div class="modal-name" id="modalName"></div>
+    <div class="modal-en" id="modalEn"></div>
+    <div class="modal-desc" id="modalDesc"></div>
+  </div>
+</div>
+
 <footer>
   알비온 온라인의 모든 정보 &nbsp;·&nbsp; 데이터는 게임 내 수치 기준 &nbsp;·&nbsp; Albion Online
 </footer>
 
 <script>
-const TERMS = [];
+const TERMS = [
+  { name: '페임', en: 'Fame', cat: '시스템', desc: '다른 게임의 경험치와 비슷한 개념으로 알비온 온라인에서는 캐릭터의 성장 지표로 사용됨. 킬 페임(Kill Fame): PvP에서 유저를 처치하여 얻은 페임. 몹 페임(Mob Fame): PvE에서 몬스터를 처치하여 얻은 페임.' },
+  { name: 'PvE', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투.' },
+  { name: 'PvP', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투.' },
+];
 
 const CATS = ['전체', '전투·스킬', 'PvP·길드', '던전·콘텐츠', '시스템', '경제', '지역·이동', '장비'];
 
@@ -344,13 +406,10 @@ function render() {
   }
 
   grid.innerHTML = filtered.map(t => `
-    <div class="term-card">
-      <div class="term-header">
-        <span class="term-name">${esc(t.name)}</span>
-        ${t.en ? `<span class="term-en">${esc(t.en)}</span>` : ''}
-        ${activeCat === '전체' ? `<span class="term-cat">${esc(t.cat)}</span>` : ''}
-      </div>
-      <p class="term-desc">${esc(t.desc)}</p>
+    <div class="term-card" onclick="openModal(${JSON.stringify(t.name)})">
+      <div class="term-name">${esc(t.name)}</div>
+      ${t.en ? `<div class="term-en">${esc(t.en)}</div>` : ''}
+      ${activeCat === '전체' ? `<div class="term-cat">${esc(t.cat)}</div>` : ''}
     </div>
   `).join('');
 }
@@ -366,6 +425,27 @@ function setTab(cat) {
 document.getElementById('searchInput').addEventListener('input', e => {
   searchQ = e.target.value;
   render();
+});
+
+function openModal(name) {
+  const t = TERMS.find(t => t.name === name);
+  if (!t) return;
+  document.getElementById('modalCat').textContent  = t.cat;
+  document.getElementById('modalName').textContent = t.name;
+  document.getElementById('modalEn').textContent   = t.en || '';
+  document.getElementById('modalDesc').textContent = t.desc;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalOverlay') && !e.target.classList.contains('modal-close')) return;
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal({ target: document.getElementById('modalOverlay') });
 });
 
 function toggleNav() {
