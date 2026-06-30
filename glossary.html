@@ -282,6 +282,20 @@
       font-size: 14px; color: var(--text-sub); line-height: 1.8;
       border-top: 1px solid var(--border); padding-top: 16px;
     }
+    .modal-desc p  { margin-bottom: 12px; }
+    .modal-desc h2 {
+      font-size: 13px; font-weight: 800; color: var(--text);
+      letter-spacing: -0.2px; margin: 18px 0 6px;
+    }
+    .modal-desc h2:first-child { margin-top: 0; }
+    .modal-desc ul { padding-left: 0; list-style: none; }
+    .modal-desc li {
+      position: relative; padding-left: 14px; margin-bottom: 4px;
+      color: var(--text-sub);
+    }
+    .modal-desc li::before {
+      content: '–'; position: absolute; left: 0; color: var(--gold); font-weight: 700;
+    }
 
     /* ── FOOTER ── */
     footer {
@@ -365,7 +379,7 @@
 
 <script>
 const TERMS = [
-  { name: '페임', en: 'Fame', cat: '시스템', desc: '다른 게임의 경험치와 비슷한 개념으로 알비온 온라인에서는 캐릭터의 성장 지표로 사용됨. 킬 페임(Kill Fame): PvP에서 유저를 처치하여 얻은 페임. 몹 페임(Mob Fame): PvE에서 몬스터를 처치하여 얻은 페임.' },
+  { name: '페임', en: 'Fame', cat: '시스템', desc: '타 게임의 경험치와 비슷한 개념으로 알비온 온라인에서는 캐릭터의 성장 지표로 사용된다.', detail: `## 킬 페임 [ 플레이어 제거 명성 ] ( Kill Fame )\n- PvP에서 유저를 처치하여 얻은 페임.\n\n## 몹 페임 [ 몹 제거 명성 ] ( Mob Fame )\n- PvE에서 몬스터를 처치하여 얻은 페임.\n\n## 총 페임 [ 전체 명성 ] ( Total Fame )\n- 모든 페임의 합산.` },
   { name: 'PvE', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투.' },
   { name: 'PvP', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투.' },
 ];
@@ -431,13 +445,37 @@ document.getElementById('searchInput').addEventListener('input', e => {
   render();
 });
 
+function renderMarkdown(text) {
+  const lines = text.split('\n');
+  let html = '';
+  let inList = false;
+  for (const line of lines) {
+    if (line.startsWith('## ')) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<h2>${esc(line.slice(3))}</h2>`;
+    } else if (line.startsWith('- ')) {
+      if (!inList) { html += '<ul>'; inList = true; }
+      html += `<li>${esc(line.slice(2))}</li>`;
+    } else if (line.trim() === '') {
+      if (inList) { html += '</ul>'; inList = false; }
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<p>${esc(line)}</p>`;
+    }
+  }
+  if (inList) html += '</ul>';
+  return html;
+}
+
 function openModal(name) {
   const t = TERMS.find(t => t.name === name);
   if (!t) return;
   document.getElementById('modalCat').textContent  = t.cat;
   document.getElementById('modalName').textContent = t.name;
   document.getElementById('modalEn').textContent   = t.en || '';
-  document.getElementById('modalDesc').textContent = t.desc;
+  const descEl = document.getElementById('modalDesc');
+  const content = (t.desc || '') + (t.detail ? '\n\n' + t.detail : '');
+  descEl.innerHTML = renderMarkdown(content);
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
