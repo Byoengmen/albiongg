@@ -406,12 +406,16 @@ function render() {
   }
 
   grid.innerHTML = filtered.map(t => `
-    <div class="term-card" onclick="openModal(${JSON.stringify(t.name)})">
+    <div class="term-card" data-name="${esc(t.name)}">
       <div class="term-name">${esc(t.name)}</div>
       ${t.en ? `<div class="term-en">${esc(t.en)}</div>` : ''}
       ${activeCat === '전체' ? `<div class="term-cat">${esc(t.cat)}</div>` : ''}
     </div>
   `).join('');
+
+  document.querySelectorAll('.term-card').forEach(card => {
+    card.addEventListener('click', () => openModal(card.dataset.name));
+  });
 }
 
 function setTab(cat) {
