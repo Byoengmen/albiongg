@@ -379,9 +379,9 @@
 
 <script>
 const TERMS = [
-  { name: '페임', en: 'Fame', cat: '시스템', desc: '타 게임의 경험치와 비슷한 개념으로 알비온 온라인에서는 캐릭터의 성장 지표로 사용된다.', detail: `## 킬 페임 [ 플레이어 제거 명성 ] ( Kill Fame )\n- PvP에서 유저를 처치하여 얻은 페임.\n\n## 몹 페임 [ 몹 제거 명성 ] ( Mob Fame )\n- PvE에서 몬스터를 처치하여 얻은 페임.\n\n## 총 페임 [ 전체 명성 ] ( Total Fame )\n- 모든 페임의 합산.` },
-  { name: 'PvE', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투.' },
-  { name: 'PvP', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투.' },
+  { name: '페임', ko: '명성', en: 'Fame', cat: '시스템', desc: '타 게임의 경험치와 비슷한 개념으로 알비온 온라인에서는 캐릭터의 성장 지표로 사용된다.', detail: `## 킬 페임 [ 플레이어 제거 명성 ] ( Kill Fame )\n- PvP에서 유저를 처치하여 얻은 페임.\n\n## 몹 페임 [ 몹 제거 명성 ] ( Mob Fame )\n- PvE에서 몬스터를 처치하여 얻은 페임.\n\n## 총 페임 [ 전체 명성 ] ( Total Fame )\n- 모든 페임의 합산.` },
+  { name: 'PvE', ko: 'Player vs Environment', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투.' },
+  { name: 'PvP', ko: 'Player vs Player', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투.' },
 ];
 
 const CATS = ['전체', '전투·스킬', 'PvP·길드', '던전·콘텐츠', '시스템', '경제', '지역·이동', '장비'];
@@ -471,8 +471,8 @@ function openModal(name) {
   const t = TERMS.find(t => t.name === name);
   if (!t) return;
   document.getElementById('modalCat').textContent  = t.cat;
-  document.getElementById('modalName').textContent = t.name;
-  document.getElementById('modalEn').textContent   = t.en || '';
+  document.getElementById('modalName').textContent = t.ko ? `${t.name} [ ${t.ko} ]` : t.name;
+  document.getElementById('modalEn').textContent   = t.en ? `( ${t.en} )` : '';
   const descEl = document.getElementById('modalDesc');
   const content = (t.desc || '') + (t.detail ? '\n\n' + t.detail : '');
   descEl.innerHTML = renderMarkdown(content);
