@@ -455,7 +455,7 @@ const TERMS = [
   { name: '티어', ko: 'T1 ~ T8', en: 'Tier', cat: '장비', desc: '아이템의 등급을 나타내는 값이며, 1 ~ 8까지 존재함.', detail: `- 숫자가 높을 수록 성능이 우수하다.`, tierItem: 'MAIN_SWORD' },
   { name: '인챈트', ko: '.0 ~ .4', en: 'Enchant', cat: '장비', desc: '아이템의 파워를 높이는 강화의 종류.', detail: `- 인챈트 1 UP은 티어 1 UP에 준하는 파워 증가 값.\n- 아티팩트 제작소에서 인챈트 가능.`, enchantItem: 'T4_MAIN_SWORD' },
   { name: '아이템 품질', ko: '', en: 'Item Quality', cat: '장비', desc: '아이템마다 품질이 존재하며 총 5단계로 분류됨.', detail: `- 품질이 높을 수록 아이템의 기본 능력치가 높음.\n- 각 마을, 길드 섬의 수리 센터에서 품질 업그레이드가 가능함.`, qualityItem: 'T4_MAIN_SWORD', screenshots: ['Screenshot/Item_Quality_01.png', 'Screenshot/Item_Quality_02.png'] },
-  { name: '플랫', ko: 'ex) 7플', en: 'Flat', cat: '장비', desc: '티어, 인챈트를 합쳐 장비의 평균 강화 값을 나타내는 단위.', detail: `- ex) 7플랫 → 4티어 3인챈트 ( 4.3 ), 5티어 2인챈트 ( 5.2 ), 6티어 1인챈트 ( 6.1 ), 7티어 0인챈트 ( 7.0 )` },
+  { name: '플랫', ko: 'ex) 7플', en: 'Flat', cat: '장비', desc: '티어, 인챈트를 합쳐 장비의 평균 강화 값을 나타내는 단위.', detail: `- ex) 7플랫 → 4티어 3인챈트 ( 4.3 ), 5티어 2인챈트 ( 5.2 ), 6티어 1인챈트 ( 6.1 ), 7티어 0인챈트 ( 7.0 )`, flatExamples: [{ id: 'T4_MAIN_SWORD@3', label: '4.3' }, { id: 'T5_MAIN_SWORD@2', label: '5.2' }, { id: 'T6_MAIN_SWORD@1', label: '6.1' }, { id: 'T7_MAIN_SWORD', label: '7.0' }] },
   { name: 'PvE', ko: 'Player vs Environment', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투.' },
   { name: 'PvP', ko: 'Player vs Player', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투.' },
 ];
@@ -578,6 +578,15 @@ function openModal(name) {
           <span class="quality-label">${label}</span>
         </div>`).join('')}
     </div>` : '';
+  const flatHTML = t.flatExamples?.length ? `
+    <div class="tier-row">
+      ${t.flatExamples.map(e => `
+        <div class="tier-item">
+          <img src="https://render.albiononline.com/v1/item/${e.id}.png" loading="lazy" alt="${e.label}">
+          <span class="tier-label">${e.label}</span>
+        </div>`).join('')}
+    </div>` : '';
+
   const enchantHTML = t.enchantItem ? `
     <div class="tier-row">
       ${[0,1,2,3,4].map(n => {
@@ -603,7 +612,7 @@ function openModal(name) {
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;">
       ${t.screenshots.map(src => `<img src="${src}" alt="스크린샷" onclick="openLightbox('${src}')" style="width:48%;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;">`).join('')}
     </div>` : '';
-  descEl.innerHTML = renderMarkdown(content) + enchantHTML + tierHTML + qualityHTML + screenshotHTML;
+  descEl.innerHTML = renderMarkdown(content) + flatHTML + enchantHTML + tierHTML + qualityHTML + screenshotHTML;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
