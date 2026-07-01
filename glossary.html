@@ -233,6 +233,14 @@
     .empty-icon { font-size: 36px; display: block; margin-bottom: 12px; }
 
     /* ── 티어 아이콘 ── */
+    .tier-section-label {
+      margin: 16px 0 4px; padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 13px; font-weight: 700; color: var(--text-muted);
+    }
+    .tier-section-label + .tier-row {
+      border-top: none; margin-top: 0; padding-top: 0;
+    }
     .tier-row {
       display: flex; gap: 8px; flex-wrap: nowrap;
       overflow-x: auto;
@@ -455,7 +463,7 @@ const TERMS = [
   { name: '티어', ko: 'T1 ~ T8', en: 'Tier', cat: '장비', desc: '아이템의 등급을 나타내는 값이며, 1 ~ 8까지 존재함.', detail: `- 숫자가 높을 수록 성능이 우수하다.`, tierItem: 'MAIN_SWORD' },
   { name: '인챈트', ko: '.0 ~ .4', en: 'Enchant', cat: '장비', desc: '아이템의 파워를 높이는 강화의 종류.', detail: `- 인챈트 1 UP은 티어 1 UP에 준하는 파워 증가 값.\n- 아티팩트 제작소에서 인챈트 가능.`, enchantItem: 'T4_MAIN_SWORD' },
   { name: '아이템 품질', ko: '', en: 'Item Quality', cat: '장비', desc: '아이템마다 품질이 존재하며 총 5단계로 분류됨.', detail: `- 품질이 높을 수록 아이템의 기본 능력치가 높음.\n- 각 마을, 길드 섬의 수리 센터에서 품질 업그레이드가 가능함.`, qualityItem: 'T4_MAIN_SWORD', screenshots: ['Screenshot/Item_Quality_01.png', 'Screenshot/Item_Quality_02.png'] },
-  { name: '플랫', ko: 'ex) 7플', en: 'Flat', cat: '장비', desc: '티어, 인챈트를 합쳐 장비의 평균 강화 값을 나타내는 단위.', detail: `- ex) 7플랫 → 4티어 3인챈트 ( 4.3 ), 5티어 2인챈트 ( 5.2 ), 6티어 1인챈트 ( 6.1 ), 7티어 0인챈트 ( 7.0 )`, flatExamples: [{ id: 'T4_MAIN_SWORD@3', label: '4.3' }, { id: 'T5_MAIN_SWORD@2', label: '5.2' }, { id: 'T6_MAIN_SWORD@1', label: '6.1' }, { id: 'T7_MAIN_SWORD', label: '7.0' }] },
+  { name: '플랫', ko: 'ex) 7플', en: 'Flat', cat: '장비', desc: '티어, 인챈트를 합쳐 장비의 평균 강화 값을 나타내는 단위.', flatExamples: { title: 'ex) 7플랫', items: [{ id: 'T4_MAIN_SWORD@3', sub: '4티어 3인챈트', label: '( 4.3 )' }, { id: 'T5_MAIN_SWORD@2', sub: '5티어 2인챈트', label: '( 5.2 )' }, { id: 'T6_MAIN_SWORD@1', sub: '6티어 1인챈트', label: '( 6.1 )' }, { id: 'T7_MAIN_SWORD', sub: '7티어 0인챈트', label: '( 7.0 )' }] } },
   { name: 'PvE', ko: 'Player vs Environment', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투.' },
   { name: 'PvP', ko: 'Player vs Player', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투.' },
 ];
@@ -578,12 +586,13 @@ function openModal(name) {
           <span class="quality-label">${label}</span>
         </div>`).join('')}
     </div>` : '';
-  const flatHTML = t.flatExamples?.length ? `
+  const flatHTML = t.flatExamples?.items?.length ? `
+    <p class="tier-section-label">${t.flatExamples.title}</p>
     <div class="tier-row">
-      ${t.flatExamples.map(e => `
+      ${t.flatExamples.items.map(e => `
         <div class="tier-item">
-          <img src="https://render.albiononline.com/v1/item/${e.id}.png" loading="lazy" alt="${e.label}">
-          <span class="tier-label">${e.label}</span>
+          <img src="https://render.albiononline.com/v1/item/${e.id}.png" loading="lazy" alt="${e.sub}">
+          <span class="tier-label">${e.sub}<br>(${e.label.replace(/[()]/g, '').trim()})</span>
         </div>`).join('')}
     </div>` : '';
 
