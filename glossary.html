@@ -392,7 +392,6 @@
       <li><a href="index.html"      class="nav-link">홈</a></li>
       <li><a href="calculator.html" class="nav-link">페임 계산기</a></li>
       <li><a href="#"               class="nav-link" onclick="wip(event)">빌드 <span class="wip-badge">준비중</span></a></li>
-      <li><a href="guide.html"      class="nav-link">가이드</a></li>
       <li><a href="player.html"     class="nav-link">전적 조회</a></li>
       <li><a href="glossary.html"   class="nav-link active">용어 사전</a></li>
     </ul>
@@ -639,11 +638,7 @@ function openModal(name) {
           </div>
         </div>`).join('')}
     </div>` : '';
-  const guideLinkHTML = t.guideLink ? `
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
-      <a href="guide.html?open=${encodeURIComponent(t.guideLink)}" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--gold);text-decoration:none;padding:8px 14px;border:1px solid rgba(201,168,76,0.35);border-radius:8px;background:var(--gold-dim);" target="_blank">자세한 내용은 가이드에서 →</a>
-    </div>` : '';
-  descEl.innerHTML = renderMarkdown(content) + zonesHTML + flatHTML + enchantHTML + tierHTML + qualityHTML + screenshotHTML + guideLinkHTML;
+  descEl.innerHTML = renderMarkdown(content) + zonesHTML + flatHTML + enchantHTML + tierHTML + qualityHTML + screenshotHTML;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
