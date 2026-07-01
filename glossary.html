@@ -484,8 +484,13 @@ const TERMS = [
   { name: '메스업', ko: '집결', en: 'Mess Up', cat: '시스템', desc: '컨텐츠 시작 전에 준비, 집결하는 과정.', detail: `- ex) "○○시 ○○컨텐츠 메싱합니다. ○○에서 메스업합시다."\n\n## 디메스 ( DeMess )\n- 조건 미충족으로 컨텐츠 취소 및 해산을 의미함.` },
   { name: 'PvE', ko: 'Player vs Environment', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투. [[페임]]과 [[숙련도]]를 올리는 주요 수단이며, [[존]]에 따라 난이도와 보상이 달라진다.' },
   { name: 'PvP', ko: 'Player vs Player', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투. [[존]] 유형에 따라 규칙이 크게 달라진다.' },
-  { name: '로얄대륙', ko: '', en: 'The Royal Continent', cat: '시스템', screenshots: ['Screenshot/Royal Continent_00.png'], desc: '월드맵의 남쪽 대륙이자 게임의 주 무대가 되는 구역. [[존]] 중 블루, 옐로, 레드존으로 이뤄져 있다.', detail: `## 주요 도시\n- [[칼레온]] ( Caerleon )\n- [[마트록]] ( Martlock )\n- 뎃포드 ( Thetford )\n- 포트 스털링 ( Fort Sterling )\n- 림허스트 ( Lymhurst )\n- 브릿지워치 ( Bridgewatch )\n- 브레실리안 ( Brecilien )` },
-  { name: '마트록', ko: '고원의 긍지', en: 'Martlock', cat: '시스템', desc: '[[칼레온]] 좌측에 위치하고 있다. 마을에서 NW 방향으로 이동하면 가까운 위치에 늪 ( Swamp ) 지형이 위치해 있어 원목, 가죽, 섬유 채집도 용이하다.', detail: `## 제련 보너스 자원\n- 가죽\n\n## 제작 보너스 장비\n- 도끼, 쿼터스태프, 프로스트 스태프, 철 신발, 보조\n\n## 주 지형\n- 고원 ( Highland )` },
+  { name: '로얄대륙', ko: '', en: 'The Royal Continent', cat: '시스템', screenshots: ['Screenshot/Royal Continent_00.png'], desc: '월드맵의 남쪽 대륙이자 게임의 주 무대가 되는 구역. [[존]] 중 블루, 옐로, 레드존으로 이뤄져 있다.', detail: `## 주요 도시\n- [[칼레온]] ( Caerleon )\n- [[마트록]] ( Martlock )\n- [[뎃포드]] ( Thetford )\n- [[포트스털링]] ( Fort Sterling )\n- [[림허스트]] ( Lymhurst )\n- [[브릿지워치]] ( Bridgewatch )\n- [[브레실리안]] ( Brecilien )` },
+  { name: '마트록', ko: '고원의 긍지', en: 'Martlock', cat: '시스템', desc: '[[칼레온]] 좌측에 위치하고 있다. 암석, 광석 채집하기 유리하며 목재 채집도 용이하다.', detail: `## 제련 보너스 자원\n- 가죽\n\n## 제작 보너스 장비\n- 도끼, 쿼터스태프, 프로스트 스태프, 철 신발, 보조\n\n## 주 지형\n- 고원 ( Highland )` },
+  { name: '뎃포드', ko: '늪의 성지', en: 'Thetford', cat: '시스템', desc: '[[로얄대륙]] 도시 중 하나. 섬유, 가죽 채집하기 유리하며 목재 채집도 용이하다.', detail: `## 제련 보너스 자원\n- 광석\n\n## 제작 보너스 장비\n- 메이스, 네이쳐 스태프, 파이어스태프, 가죽 갑옷, 천 헬멧\n\n## 주 지형\n- 늪 ( Swamp )` },
+  { name: '포트스털링', ko: '산의 심장', en: 'Fort Sterling', cat: '시스템', desc: '[[로얄대륙]] 도시 중 하나. 광석, 섬유 채집하기 유리하며 암석 채집도 용이하다.', detail: `## 제련 보너스 자원\n- 목재\n\n## 제작 보너스 장비\n- 망치, 스피어, 홀리 스태프, 철 헬멧, 천 갑옷\n\n## 주 지형\n- 산 ( Mountain )` },
+  { name: '림허스트', ko: '숲속의 피난처', en: 'Lymhurst', cat: '시스템', desc: '[[로얄대륙]] 도시 중 하나. 목재, 가죽 채집하기 유리하며 암석 채집도 용이하다.', detail: `## 제련 보너스 자원\n- 섬유\n\n## 제작 보너스 장비\n- 소드, 보우, 아케인 스태프, 가죽 헬멧, 가죽 신발\n\n## 주 지형\n- 숲 ( Forest )` },
+  { name: '브릿지워치', ko: '초원의 보석', en: 'Bridgewatch', cat: '시스템', desc: '[[로얄대륙]] 도시 중 하나. 가죽, 섬유 채집하기 유리하며 광석 채집도 용이하다.', detail: `## 제련 보너스 자원\n- 암석\n\n## 제작 보너스 장비\n- 크로스보우, 대거, 커스드 스태프, 철 갑옷, 천 신발\n\n## 주 지형\n- 평원 ( Steppe )` },
+  { name: '브레실리안', ko: '안개 속 도시', en: 'Brecilien', cat: '시스템', desc: '[[로얄대륙]] 도시 중 하나. 안개 ( Mist ) 지형을 주 배경으로 한다.', detail: `## 제련 보너스 자원\n- 없음\n\n## 제작 보너스 장비\n- 망토, 가방, 포션\n\n## 주 지형\n- 안개 ( Mist )` },
   { name: '칼레온', ko: '무법자들의 도시', en: 'Caerleon', cat: '시스템', desc: '[[로얄대륙]]의 중심에 위치하고 있다. 여행 설계사를 이용해 칼레온으로 이동할 때는 어떤 장비도 운반할 수 없다. 게임 시스템이 직접 유저들의 아이템을 사들이는 암시장이 존재한다.', detail: `## 제련 보너스 자원\n- 없음\n\n## 제작 보너스 장비\n- 채집 도구, 도구, 식량, 포션, 전투 장갑\n\n## 주 지형\n- 없음` },
 ];
 
