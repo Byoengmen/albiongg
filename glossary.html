@@ -403,7 +403,7 @@ const TERMS = [
   { name: 'IP', ko: '아이템 파워', en: 'Item Power', cat: '장비', desc: '장착한 아이템의 강함을 나타내는 지표.', detail: `- 아이템의 티어, 품질, 인첸트, 숙련도에 따라 결정됨.` },
   { name: '티어', ko: 'T1 ~ T8', en: 'Tier', cat: '장비', desc: '아이템의 등급을 나타내는 값이며, 1 ~ 8까지 존재함.', detail: `- 숫자가 높을 수록 성능이 우수하다.` },
   { name: '인챈트', ko: '.0 ~ .4', en: 'Enchant', cat: '장비', desc: '아이템의 파워를 높이는 강화의 종류.', detail: `- 인챈트 1 UP은 티어 1 UP에 준하는 파워 증가 값.\n- 아티팩트 제작소에서 인챈트 가능.` },
-  { name: '아이템 품질', ko: '', en: 'Item Quality', cat: '장비', desc: '아이템마다 품질이 존재하며 총 5단계로 분류됨.', detail: `- 품질이 높을 수록 아이템의 기본 능력치가 높음.`, qualityItem: 'T4_MAIN_SWORD' },
+  { name: '아이템 품질', ko: '', en: 'Item Quality', cat: '장비', desc: '아이템마다 품질이 존재하며 총 5단계로 분류됨.', detail: `- 품질이 높을 수록 아이템의 기본 능력치가 높음.\n- 각 마을, 길드 섬의 수리 센터에서 품질 업그레이드가 가능함.`, qualityItem: 'T4_MAIN_SWORD', screenshot: 'Screenshot/Item_Quality_01.png' },
   { name: '플랫', ko: 'ex) 7플', en: 'Flat', cat: '장비', desc: '티어, 인챈트를 합쳐 장비의 평균 강화 값을 나타내는 단위.', detail: `- ex) 7플랫 → 4티어 3인챈트 ( 4.3 ), 5티어 2인챈트 ( 5.2 ), 6티어 1인챈트 ( 6.1 ), 7티어 0인챈트 ( 7.0 )` },
   { name: 'PvE', ko: 'Player vs Environment', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투.' },
   { name: 'PvP', ko: 'Player vs Player', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투.' },
@@ -509,7 +509,11 @@ function openModal(name) {
           <span class="quality-label">${label}</span>
         </div>`).join('')}
     </div>` : '';
-  descEl.innerHTML = renderMarkdown(content) + qualityHTML;
+  const screenshotHTML = t.screenshot ? `
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <img src="${t.screenshot}" alt="스크린샷" style="width:100%;border-radius:10px;border:1px solid var(--border);">
+    </div>` : '';
+  descEl.innerHTML = renderMarkdown(content) + qualityHTML + screenshotHTML;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
