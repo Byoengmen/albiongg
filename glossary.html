@@ -619,7 +619,7 @@ function openModal(name) {
 
   const screenshotHTML = t.screenshots?.length ? `
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;">
-      ${t.screenshots.map(src => `<img src="${src}" alt="스크린샷" onclick="openLightbox('${src}')" style="width:48%;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;">`).join('')}
+      ${t.screenshots.map(src => `<img src="${src}" alt="스크린샷" onclick="openLightbox('${src}')" style="max-width:100%;height:auto;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;">`).join('')}
     </div>` : '';
   descEl.innerHTML = renderMarkdown(content) + flatHTML + enchantHTML + tierHTML + qualityHTML + screenshotHTML;
   document.getElementById('modalOverlay').classList.add('open');
