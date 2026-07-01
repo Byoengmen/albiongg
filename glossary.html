@@ -297,6 +297,25 @@
       content: '–'; position: absolute; left: 0; color: var(--gold); font-weight: 700;
     }
 
+    /* ── 퀄리티 아이콘 ── */
+    .quality-row {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin-top: 16px; padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .quality-item {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+    }
+    .quality-item img {
+      width: 52px; height: 52px; object-fit: contain;
+      border-radius: 8px; border: 1px solid var(--border);
+      background: var(--bg-input);
+    }
+    .quality-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.3px;
+      text-align: center; color: var(--text-muted);
+    }
+
     /* ── FOOTER ── */
     footer {
       text-align: center; padding: 20px 16px;
@@ -383,7 +402,7 @@ const TERMS = [
   { name: 'IP', ko: '아이템 파워', en: 'Item Power', cat: '장비', desc: '장착한 아이템의 강함을 나타내는 지표.', detail: `- 아이템의 티어, 품질, 인첸트, 숙련도에 따라 결정됨.` },
   { name: '티어', ko: 'T1 ~ T8', en: 'Tier', cat: '장비', desc: '아이템의 등급을 나타내는 값이며, 1 ~ 8까지 존재함.', detail: `- 숫자가 높을 수록 성능이 우수하다.` },
   { name: '인챈트', ko: '.0 ~ .4', en: 'Enchant', cat: '장비', desc: '아이템의 파워를 높이는 강화의 종류.', detail: `- 인챈트 1 UP은 티어 1 UP에 준하는 파워 증가 값.\n- 아티팩트 제작소에서 인챈트 가능.` },
-  { name: '아이템 품질', ko: '', en: 'Item Quality', cat: '장비', desc: '아이템마다 품질이 존재하며 총 5단계로 분류됨.', detail: `- 품질이 높을 수록 아이템의 기본 능력치가 높음.` },
+  { name: '아이템 품질', ko: '', en: 'Item Quality', cat: '장비', desc: '아이템마다 품질이 존재하며 총 5단계로 분류됨.', detail: `- 품질이 높을 수록 아이템의 기본 능력치가 높음.`, qualityItem: 'T4_MAIN_SWORD' },
   { name: '플랫', ko: 'ex) 7플', en: 'Flat', cat: '장비', desc: '티어, 인챈트를 합쳐 장비의 평균 강화 값을 나타내는 단위.', detail: `- ex) 7플랫 → 4티어 3인챈트 ( 4.3 ), 5티어 2인챈트 ( 5.2 ), 6티어 1인챈트 ( 6.1 ), 7티어 0인챈트 ( 7.0 )` },
   { name: 'PvE', ko: 'Player vs Environment', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투.' },
   { name: 'PvP', ko: 'Player vs Player', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투.' },
@@ -480,7 +499,16 @@ function openModal(name) {
   document.getElementById('modalEn').textContent   = t.en ? `( ${t.en} )` : '';
   const descEl = document.getElementById('modalDesc');
   const content = (t.desc || '') + (t.detail ? '\n\n' + t.detail : '');
-  descEl.innerHTML = renderMarkdown(content);
+  const qualityNames = ['일반', '좋음', '뛰어남', '탁월함', '걸작'];
+  const qualityHTML = t.qualityItem ? `
+    <div class="quality-row">
+      ${qualityNames.map((label, i) => `
+        <div class="quality-item">
+          <img src="https://render.albiononline.com/v1/item/${t.qualityItem}.png?quality=${i+1}" loading="lazy" alt="${label}">
+          <span class="quality-label">${label}</span>
+        </div>`).join('')}
+    </div>` : '';
+  descEl.innerHTML = renderMarkdown(content) + qualityHTML;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
