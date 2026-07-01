@@ -874,6 +874,11 @@ document.addEventListener('click', e => {
     document.getElementById('navMenu').classList.remove('open');
   }
 });
+
+// URL 파라미터로 특정 가이드 자동 오픈
+const _urlParams = new URLSearchParams(location.search);
+const _openTarget = _urlParams.get('open');
+if (_openTarget) openModal(decodeURIComponent(_openTarget));
 </script>
 </body>
 </html>

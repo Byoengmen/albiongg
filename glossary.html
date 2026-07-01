@@ -469,6 +469,7 @@ const TERMS = [
   { name: '명성 크레딧', ko: 'Fame Credit', en: 'Fame Credit', cat: '시스템', desc: '만숙을 달성한 장비로 사냥 시, 더 이상 오르지 않는 숙련도를 크레딧으로 변환해 다른 장비의 숙련도를 올릴 수 있는 시스템.', screenshots: ['Screenshot/Fame_Credit_00.png', 'Screenshot/Fame_Credit_01.png', 'Screenshot/Fame_Credit_02.png'] },
   { name: '자동 재특화', ko: 'Auto Respec', en: 'Auto Respec', cat: '시스템', desc: '실버를 소모하여 명성 크레딧 획득량을 늘려주는 시스템. 100레벨 장비를 착용하고 사냥할 때 효율을 높이기 위해 사용.', screenshots: ['Screenshot/Auto_Respec_00.png'] },
   { name: '플랫', ko: 'ex) 7플', en: 'Flat', cat: '장비', desc: '티어, 인챈트를 합쳐 장비의 평균 강화 값을 나타내는 단위.', flatExamples: { title: 'ex) 7플랫', items: [{ id: 'T4_MAIN_SWORD@3', sub: '4티어 3인챈트', label: '( 4.3 )' }, { id: 'T5_MAIN_SWORD@2', sub: '5티어 2인챈트', label: '( 5.2 )' }, { id: 'T6_MAIN_SWORD@1', sub: '6티어 1인챈트', label: '( 6.1 )' }, { id: 'T7_MAIN_SWORD', sub: '7티어 0인챈트', label: '( 7.0 )' }] } },
+  { name: '존', ko: '지역 유형', en: 'Zone', cat: '시스템', desc: '알비온 온라인의 지역은 PvP 위험도에 따라 4가지 존으로 나뉜다.', detail: `- 블루존 : PvP 불가능 지역.\n- 옐로존 : PvP 가능, 적대 유저 수를 맵에 표시 ( 칼 ), 체력 0 시 기절 ( 3분 후 부활 ).\n- 레드존 : PvP 가능, 적대 유저 수를 맵에 표시 ( 칼 ), 체력 0 시 사망 ( 모든 아이템 드랍 ).\n- 블랙존 : 길드, 연맹, 파티 제외 모든 유저가 적대적, 체력 0 시 사망 ( 모든 아이템 드랍 ).`, guideLink: '지역 유형 및 전투 상태' },
   { name: 'PvE', ko: 'Player vs Environment', en: 'Player vs Environment', cat: '시스템', desc: '몬스터를 상대로 진행하는 전투.' },
   { name: 'PvP', ko: 'Player vs Player', en: 'Player vs Player', cat: '시스템', desc: '유저를 상대로 진행하는 전투.' },
 ];
@@ -626,7 +627,11 @@ function openModal(name) {
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
       ${t.screenshots.map(src => `<img src="${src}" alt="스크린샷" onclick="openLightbox('${src}')" style="width:100%;height:auto;display:block;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;">`).join('')}
     </div>` : '';
-  descEl.innerHTML = renderMarkdown(content) + flatHTML + enchantHTML + tierHTML + qualityHTML + screenshotHTML;
+  const guideLinkHTML = t.guideLink ? `
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+      <a href="guide.html?open=${encodeURIComponent(t.guideLink)}" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--gold);text-decoration:none;padding:8px 14px;border:1px solid rgba(201,168,76,0.35);border-radius:8px;background:var(--gold-dim);" target="_blank">자세한 내용은 가이드에서 →</a>
+    </div>` : '';
+  descEl.innerHTML = renderMarkdown(content) + flatHTML + enchantHTML + tierHTML + qualityHTML + screenshotHTML + guideLinkHTML;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
