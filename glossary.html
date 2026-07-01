@@ -601,8 +601,8 @@ function openModal(name) {
   const t = TERMS.find(t => t.name === name);
   if (!t) return;
   document.getElementById('modalCat').textContent  = t.cat;
-  document.getElementById('modalName').textContent = t.ko ? `${t.name} [ ${t.ko} ]` : t.name;
-  document.getElementById('modalEn').textContent   = t.en ? `( ${t.en} )` : '';
+  document.getElementById('modalName').textContent = t.name;
+  document.getElementById('modalEn').textContent   = [t.ko ? `( ${t.ko} )` : '', t.en ? `( ${t.en} )` : ''].filter(Boolean).join(' ');
   const descEl = document.getElementById('modalDesc');
   const content = (t.desc || '') + (t.detail ? '\n\n' + t.detail : '');
   const qualityNames = ['일반', '좋음', '뛰어남', '탁월함', '걸작'];
