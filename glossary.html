@@ -232,6 +232,30 @@
     }
     .empty-icon { font-size: 36px; display: block; margin-bottom: 12px; }
 
+    /* ── 라이트박스 ── */
+    .lightbox {
+      display: none;
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw; max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+    }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 20px;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.5);
+      color: #fff; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
     /* ── MODAL ── */
     .modal-overlay {
       display: none;
@@ -382,6 +406,12 @@
   </div>
 </div>
 
+<!-- 라이트박스 -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">✕</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
 <!-- 모달 -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal-box">
@@ -470,6 +500,24 @@ document.getElementById('searchInput').addEventListener('input', e => {
   render();
 });
 
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLightbox();
+    closeModal({ target: document.getElementById('modalOverlay') });
+  }
+});
+
 function renderMarkdown(text) {
   const lines = text.split('\n');
   let html = '';
@@ -511,7 +559,7 @@ function openModal(name) {
     </div>` : '';
   const screenshotHTML = t.screenshots?.length ? `
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;">
-      ${t.screenshots.map(src => `<img src="${src}" alt="스크린샷" style="width:48%;border-radius:10px;border:1px solid var(--border);">`).join('')}
+      ${t.screenshots.map(src => `<img src="${src}" alt="스크린샷" onclick="openLightbox('${src}')" style="width:48%;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;">`).join('')}
     </div>` : '';
   descEl.innerHTML = renderMarkdown(content) + qualityHTML + screenshotHTML;
   document.getElementById('modalOverlay').classList.add('open');
